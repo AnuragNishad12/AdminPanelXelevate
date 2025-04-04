@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { db } from '../../src/firebaseConfig'; 
+import { database } from '../../src/firebaseConfig'; 
 import { ref, push, set } from 'firebase/database';
 
 export default function ReviewForm() {
@@ -25,7 +25,7 @@ export default function ReviewForm() {
     
     try {
       // Create a reference to the 'reviews' node in your database
-      const reviewsRef = ref(db, 'reviews');
+      const reviewsRef = ref(database, 'reviews');
       
       // Generate a new child location using push()
       const newReviewRef = push(reviewsRef);

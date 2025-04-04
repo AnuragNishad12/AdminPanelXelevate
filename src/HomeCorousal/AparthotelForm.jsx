@@ -34,7 +34,7 @@ export default function AparthotelForm() {
   return (
     <div className="p-6 max-w-lg mx-auto shadow-lg rounded-2xl bg-white">
       <div className="p-4">
-        <h2 className="text-xl font-bold mb-4">Deal of The Day</h2>
+        <h2 className="text-x2 font-bold mb-4">Deal of The Day</h2>
         <form onSubmit={handleSubmit} className="space-y-3">
           <div>
             <label className="block text-sm font-medium">Image URL</label>
