@@ -3,6 +3,7 @@ import './App.css'
 import AparthotelForm from './HomeCorousal/AparthotelForm'
 import ReviewForm from './ReviewCustomer/ReviewForm'
 import AircraftForm from './AircraftForm/AircraftForm'
+import CarForm from './Car/CarForm'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -12,7 +13,8 @@ function App() {
       <div>
        {/* <AparthotelForm/> */}
        {/* <ReviewForm/> */}
-       <AircraftForm/>
+       {/* <AircraftForm/> */}
+       <CarForm/>
       </div>
     
     </>
