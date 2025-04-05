@@ -1,16 +1,18 @@
+// AparthotelForm.jsx
 import { useState } from "react";
-import { database, ref, push, set } from "../../src/firebaseConfig"; // Import Firebase functions
+import { database, ref, push, set } from "../../src/firebaseConfig";
+import "./AparthotelForm.css"; // Import the custom CSS file
 
 export default function AparthotelForm() {
   const [formData, setFormData] = useState({
-    name: "Aparthotel Stare Miasto",
-    location: "Old Town, Poland, Kraków",
-    rating: "8.8",
-    ratingText: "Fabulous",
-    reviewCount: "3,177",
-    price: "8,141",
+    name: "",
+    location: "",
+    rating: "",
+    ratingText: "",
+    reviewCount: "",
+    price: "",
     imageUrl:
-      "https://plus.unsplash.com/premium_photo-1661919210043-fd847a58522d?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fA%3D%3D",
+      "",
   });
 
   const handleChange = (e) => {
@@ -19,11 +21,9 @@ export default function AparthotelForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-      const newHotelRef = push(ref(database, "admin/Dealoftehday")); // Creates a unique entry
-      await set(newHotelRef, formData); // Saves data to Firebase
-
+      const newHotelRef = push(ref(database, "admin/Dealoftehday"));
+      await set(newHotelRef, formData);
       alert("Data saved successfully!");
     } catch (error) {
       console.error("Error saving data:", error);
@@ -32,80 +32,149 @@ export default function AparthotelForm() {
   };
 
   return (
-    <div className="p-6 max-w-lg mx-auto shadow-lg rounded-2xl bg-white">
-      <div className="p-4">
-        <h2 className="text-x2 font-bold mb-4">Deal of The Day</h2>
-        <form onSubmit={handleSubmit} className="space-y-3">
-          <div>
-            <label className="block text-sm font-medium">Image URL</label>
+    <div className="page-container">
+      <div className="form-container">
+        {/* Preview Section */}
+        <div className="preview-section">
+          <h3 className="preview-title">Preview</h3>
+          <div className="preview-card">
+            <img
+              src={formData.imageUrl}
+              alt="Hotel Preview"
+              className="preview-image"
+            />
+            <div className="preview-details">
+              <h4 className="preview-name">{formData.name}</h4>
+              <p className="preview-location">{formData.location}</p>
+              <div className="preview-rating">
+                <span className="rating-value">{formData.rating}</span>
+                <span className="rating-text">{formData.ratingText}</span>
+                <span className="review-count">({formData.reviewCount})</span>
+              </div>
+              <p className="preview-price">{formData.price} PLN</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Form Section */}
+        <form onSubmit={handleSubmit}>
+          <h2 className="form-title">Deal of the Day</h2>
+
+          <div className="form-group">
+            <label className="form-label">
+              Image URL
+              <span className="help-icon" title="Provide a valid URL to an image of the hotel">?</span>
+            </label>
             <input
+              type="url"
               name="imageUrl"
               value={formData.imageUrl}
               onChange={handleChange}
-              className="border p-2 rounded w-full"
+              className="form-input"
+              placeholder="e.g., https://example.com/image.jpg"
+              title="Provide a valid URL to an image of the hotel"
             />
           </div>
-          {/* <img
-            src={formData.imageUrl}
-            alt="Hotel Preview"
-            className="w-full h-48 object-cover rounded-lg mb-4"
-          /> */}
-          <div>
-            <label className="block text-sm font-medium">Name</label>
+
+          <div className="form-group">
+            <label className="form-label">
+              Name
+              <span className="help-icon" title="Enter the full name of the hotel">?</span>
+            </label>
             <input
+              type="text"
               name="name"
               value={formData.name}
               onChange={handleChange}
-              className="border p-2 rounded w-full"
+              className="form-input"
+              placeholder="e.g., Aparthotel Stare Miasto"
+              title="Enter the full name of the hotel"
             />
           </div>
-          <div>
-            <label className="block text-sm font-medium">Location</label>
+
+          <div className="form-group">
+            <label className="form-label">
+              Location
+              <span className="help-icon" title="Enter the city and country (e.g., Old Town, Poland, Kraków)">?</span>
+            </label>
             <input
+              type="text"
               name="location"
               value={formData.location}
               onChange={handleChange}
-              className="border p-2 rounded w-full"
+              className="form-input"
+              placeholder="e.g., Old Town, Poland, Kraków"
+              title="Enter the city and country (e.g., Old Town, Poland, Kraków)"
             />
           </div>
-          <div>
-            <label className="block text-sm font-medium">Rating</label>
-            <input
-              name="rating"
-              value={formData.rating}
-              onChange={handleChange}
-              className="border p-2 rounded w-full"
-            />
+
+          <div className="form-grid">
+            <div className="form-group">
+              <label className="form-label">
+                Rating
+                <span className="help-icon" title="Enter a numerical rating out of 10 (e.g., 8.8)">?</span>
+              </label>
+              <input
+                type="text"
+                name="rating"
+                value={formData.rating}
+                onChange={handleChange}
+                className="form-input"
+                placeholder="e.g., 8.8"
+                title="Enter a numerical rating out of 10 (e.g., 8.8)"
+              />
+            </div>
+            <div className="form-group">
+              <label className="form-label">
+                Rating Text
+                <span className="help-icon" title="Enter a descriptive word for the rating (e.g., Fabulous)">?</span>
+              </label>
+              <input
+                type="text"
+                name="ratingText"
+                value={formData.ratingText}
+                onChange={handleChange}
+                className="form-input"
+                placeholder="e.g., Fabulous"
+                title="Enter a descriptive word for the rating (e.g., Fabulous)"
+              />
+            </div>
           </div>
-          <div>
-            <label className="block text-sm font-medium">Rating Text</label>
+
+          <div className="form-group">
+            <label className="form-label">
+              Review Count
+              <span className="help-icon" title="Enter the number of reviews (e.g., 3,177)">?</span>
+            </label>
             <input
-              name="ratingText"
-              value={formData.ratingText}
-              onChange={handleChange}
-              className="border p-2 rounded w-full"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium">Review Count</label>
-            <input
+              type="text"
               name="reviewCount"
               value={formData.reviewCount}
               onChange={handleChange}
-              className="border p-2 rounded w-full"
+              className="form-input"
+              placeholder="e.g., 3,177"
+              title="Enter the number of reviews (e.g., 3,177)"
             />
           </div>
-          <div>
-            <label className="block text-sm font-medium">Price</label>
+
+          <div className="form-group">
+            <label className="form-label">
+              Price (PLN)
+              <span className="help-icon" title="Enter the price in PLN (e.g., 8,141)">?</span>
+            </label>
             <input
+              type="text"
               name="price"
               value={formData.price}
               onChange={handleChange}
-              className="border p-2 rounded w-full"
+              className="form-input"
+              placeholder="e.g., 8,141"
+              title="Enter the price in PLN (e.g., 8,141)"
             />
           </div>
-          <button type="submit" className="w-full px-4 py-2 bg-blue-500 text-white rounded">
-            Save
+
+          <button type="submit" className="form-button">
+            Save Deal
           </button>
         </form>
       </div>
