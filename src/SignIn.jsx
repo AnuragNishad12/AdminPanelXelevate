@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "./SignIn.css";
+import { useNavigate } from "react-router-dom";
+import { auth, firestore } from "./firebaseConfig";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
 
 const SignIn = () => {
   const [formData, setFormData] = useState({
@@ -11,9 +15,29 @@ const SignIn = () => {
   const [formErrors, setFormErrors] = useState({
     email: "",
     password: "",
+    auth: "",
   });
 
-  // Form validation
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
+      if (user) {
+  
+        try {
+          const userDoc = await getDoc(doc(firestore, "users", user.uid));
+          if (userDoc.exists()) {
+            navigate("/MainPage");
+          } else {
+            console.log("User authenticated but no Firestore record found");
+          }
+        } catch (error) {
+          console.error("Error checking user in Firestore:", error);
+        }
+      }
+    });
+    return () => unsubscribe();
+  }, [navigate]);
   useEffect(() => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     setFormErrors(prev => ({
@@ -33,6 +57,9 @@ const SignIn = () => {
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    if (formErrors.auth) {
+      setFormErrors(prev => ({ ...prev, auth: "" }));
+    }
   };
 
   const isFormValid = () => {
@@ -44,7 +71,7 @@ const SignIn = () => {
     );
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
     if (!isFormValid()) {
@@ -56,12 +83,60 @@ const SignIn = () => {
     }
 
     setIsLoading(true);
-    // Simulate API call
-    setTimeout(() => {
+    
+    try {
+      console.log("Attempting to sign in with email:", formData.email);
+      const userCredential = await signInWithEmailAndPassword(
+        auth, 
+        formData.email, 
+        formData.password
+      );
+      const user = userCredential.user;
+      console.log("User signed in successfully:", user.uid);
+    
+      const userDoc = await getDoc(doc(firestore, "users", user.uid));
+      
+      if (userDoc.exists()) {
+        console.log("User found in Firestore, redirecting to main page");
+        navigate("/MainPage");
+      } else {
+        console.log("User authenticated but not found in Firestore");
+        try {
+          await setDoc(doc(firestore, "users", user.uid), {
+            uid: user.uid,
+            email: user.email,
+            createdAt: new Date().toISOString(),
+          });
+          navigate("/MainPage");
+        } catch (error) {
+          console.error("Error creating user in Firestore:", error);
+          setFormErrors(prev => ({ 
+            ...prev, 
+            auth: "Error creating user profile. Please try again." 
+          }));
+        }
+      }
+    } catch (error) {
+      console.error("Sign in error:", error);
+      let errorMessage = "Failed to sign in. Please check your credentials.";
+      
+      if (error.code === 'auth/user-not-found') {
+        errorMessage = "No account found with this email. Please sign up.";
+        setTimeout(() => {
+          navigate("/SignUp");
+        }, 2000);
+      } else if (error.code === 'auth/wrong-password') {
+        errorMessage = "Incorrect password. Please try again.";
+      } else if (error.code === 'auth/invalid-email') {
+        errorMessage = "Invalid email format.";
+      } else if (error.code === 'auth/too-many-requests') {
+        errorMessage = "Too many failed attempts. Please try again later.";
+      }
+      
+      setFormErrors(prev => ({ ...prev, auth: errorMessage }));
+    } finally {
       setIsLoading(false);
-      alert("Sign In Successful!");
-      setFormData({ email: "", password: "" });
-    }, 2000);
+    }
   };
 
   return (
@@ -69,6 +144,12 @@ const SignIn = () => {
       <div className="signin-form-container">
         <h2 className="signin-title">Welcome back</h2>
         <p className="signin-subtitle">Please enter your information to sign in</p>
+
+        {formErrors.auth && (
+          <div className="auth-error-message">
+            {formErrors.auth}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit}>
           <div className="signin-form-group">

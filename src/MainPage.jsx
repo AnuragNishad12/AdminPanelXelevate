@@ -5,10 +5,10 @@ import "./MainPage.css";
 
 const cardData = [
   { title: "Deal of The day", route: "/Dealoftheday" },
-  { title: "Users", route: "/users" },
-  { title: "Reports", route: "/reports" },
-  { title: "Settings", route: "/settings" },
-  { title: "Analytics", route: "/analytics" },
+  { title: "Cars", route: "/Cars" },
+  { title: "Customer Review", route: "/CustomerReview" },
+  { title: "Aircraft", route: "/Aircraft" },
+  { title: "Blogs", route: "/Blogs" },
   { title: "Support", route: "/support" },
   { title: "Notifications", route: "/notifications" },
   { title: "Logout", route: "/logout" },
