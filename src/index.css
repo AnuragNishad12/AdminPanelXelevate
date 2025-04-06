@@ -20,6 +20,8 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+
+
 a {
   font-weight: 500;
   color: #646cff;
@@ -32,6 +34,9 @@ a:hover {
 body {
   margin: 0;
   
+}
+h2{
+  color: white;
 }
 
 h1 {

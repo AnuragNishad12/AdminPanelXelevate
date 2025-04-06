@@ -9,11 +9,14 @@
   
   body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f5f7fa;
+    background-color: #161617;
     color: #333;
     line-height: 1.6;
   }
   
+  /* label{
+    color: #000000;
+  } */
   /* Main container styles */
   .aircraft-management {
     width: 100%;
@@ -114,10 +117,14 @@
     flex: 1;
     min-width: 300px;
     max-width: 800px;
+    background-color: #000000;
   }
-  
+  .page-title{
+    color: white;
+  }
+
   .form-container {
-    background-color: #fff;
+    background-color: #000000;
     border-radius: 10px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     padding: 30px;
@@ -127,7 +134,7 @@
   .section-title {
     font-size: 24px;
     margin-bottom: 25px;
-    color: #2c3e50;
+    color: #ffffff;
     border-bottom: 2px solid #eaeaea;
     padding-bottom: 10px;
     font-weight: 600;
@@ -140,6 +147,10 @@
     border-radius: 8px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   }
+
+  /* .form-group label{
+    color: rgb(255, 0, 0);
+  } */
   
   .group-title {
     font-size: 18px;
@@ -168,7 +179,7 @@
     display: block;
     margin-bottom: 8px;
     font-weight: 500;
-    color: #555;
+    color: #000000;
     font-size: 14px;
   }
   
@@ -440,7 +451,7 @@
   
   /* Section title */
   .section-title {
-    color: #2c3e50;
+    color: #ffffff;
     font-size: 2rem;
     margin-bottom: 1.5rem;
     padding-bottom: 0.5rem;
@@ -488,14 +499,14 @@
     justify-content: space-between;
     align-items: center;
     padding: 15px 20px;
-    background-color: #f8f9fa;
+    background-color: #002850;
     border-bottom: 1px solid #e9ecef;
   }
   
   .aircraft-card-header h3 {
     margin: 0;
     font-size: 1.25rem;
-    color: #2c3e50;
+    color: #ffffff;
     font-weight: 600;
   }
   
@@ -503,15 +514,17 @@
   .aircraft-card-content {
     display: flex;
     padding: 20px;
+    background-color: #000000;
   }
   
   .aircraft-info {
     flex: 1;
+    
   }
   
   .aircraft-info p {
     margin: 8px 0;
-    color: #495057;
+    color: #ffffff;
   }
   
   .aircraft-info p strong {
@@ -538,6 +551,7 @@
   .card-actions {
     display: flex;
     gap: 8px;
+   
   }
   
   /* .btn-icon {

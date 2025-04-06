@@ -9,7 +9,7 @@ const cardData = [
   { title: "Customer Review", route: "/CustomerReview" },
   { title: "Aircraft", route: "/Aircraft" },
   { title: "Blogs", route: "/Blogs" },
-  { title: "Support", route: "/support" },
+  { title: "Helicopter", route: "/Helicopter" },
   { title: "Notifications", route: "/notifications" },
   { title: "Logout", route: "/logout" },
 ];

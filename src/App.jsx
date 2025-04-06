@@ -6,6 +6,7 @@ import ReviewForm from './ReviewCustomer/ReviewForm';
 import AircraftForm from './AircraftForm/AircraftForm';
 import CarForm from './Car/CarForm';
 import MainPage from './MainPage';
+import Helicopter from './Helicopter/Helicopter'
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import SignUp from './SignUp';
@@ -29,6 +30,7 @@ function App() {
           <Route path="/CustomerReview" element={<ReviewForm />} />
           <Route path="/Aircraft" element={<AircraftForm />} />
           <Route path="/Blogs" element={<LuxuryJetForm />} />
+          <Route path="/Helicopter" element={<Helicopter />} />
         </Routes>
       </Router>
     </>

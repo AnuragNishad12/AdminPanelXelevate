@@ -1,125 +1,173 @@
-import { useState } from "react";
-import { database } from '../../src/firebaseConfig'; 
-import { ref, push, set } from 'firebase/database';
+import { useState, useEffect } from "react";
+import { database, storage } from '../../src/firebaseConfig'; 
+import { ref as dbRef, push, set, onValue, remove, update } from 'firebase/database';
+import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage'; // Add storage imports
+import './ReviewForm.css';
 
 export default function ReviewForm() {
   const [formData, setFormData] = useState({
-    name: "Serginho La Gracia",
-    rating: 4,
-    text: "The Paul Pogba 16/17 Manchester United jersey arrived in perfect condition. Impressed with the quality and attention to detail!",
-    image: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    name: "",
+    rating: 5,
+    text: "",
+    image: null // Change from string to file object
   });
-  
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState({ success: false, message: "" });
+  const [reviews, setReviews] = useState([]);
+  const [editId, setEditId] = useState(null);
+
+  useEffect(() => {
+    const reviewsRef = dbRef(database, 'reviews');
+    onValue(reviewsRef, (snapshot) => {
+      const data = snapshot.val();
+      const loadedReviews = data ? Object.entries(data).map(([id, value]) => ({ id, ...value })) : [];
+      setReviews(loadedReviews.reverse());
+    });
+  }, []);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    const { name, value, files } = e.target;
+    if (name === 'image') {
+      setFormData({ ...formData, [name]: files[0] }); // Store file object
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitStatus({ success: false, message: "" });
-    
+
     try {
-      // Create a reference to the 'reviews' node in your database
-      const reviewsRef = ref(database, 'reviews');
+      let imageUrl = '';
       
-      // Generate a new child location using push()
-      const newReviewRef = push(reviewsRef);
-      
-      // Set the data at the new location
-      await set(newReviewRef, {
-        ...formData,
-        timestamp: Date.now()
-      });
-      
-      console.log("Review submitted successfully!");
-      setSubmitStatus({
-        success: true,
-        message: "Review submitted successfully!"
-      });
-      
-      // Optional: reset the form after successful submission
-      setFormData({
-        name: "",
-        rating: 5,
-        text: "",
-        image: ""
-      });
+      // Upload image to Firebase Storage if exists
+      if (formData.image && formData.image instanceof File) {
+        const imageStorageRef = storageRef(storage, `review-images/${Date.now()}-${formData.image.name}`);
+        await uploadBytes(imageStorageRef, formData.image);
+        imageUrl = await getDownloadURL(imageStorageRef);
+      } else if (editId && formData.image) {
+        imageUrl = formData.image; // Keep existing URL when editing if no new image
+      }
+
+      if (editId) {
+        const reviewRef = dbRef(database, `reviews/${editId}`);
+        await update(reviewRef, { 
+          ...formData, 
+          image: imageUrl,
+          imageFile: null // Don't store the file object in database
+        });
+        setSubmitStatus({ success: true, message: "Review updated successfully!" });
+      } else {
+        const reviewsRef = dbRef(database, 'reviews');
+        const newReviewRef = push(reviewsRef);
+        await set(newReviewRef, {
+          ...formData,
+          image: imageUrl,
+          imageFile: null, // Don't store the file object in database
+          timestamp: Date.now()
+        });
+        setSubmitStatus({ success: true, message: "Review submitted successfully!" });
+      }
+
+      setFormData({ name: "", rating: 5, text: "", image: null });
+      setEditId(null);
     } catch (error) {
-      console.error("Error submitting review:", error);
-      setSubmitStatus({
-        success: false,
-        message: `Error submitting review: ${error.message}`
-      });
+      setSubmitStatus({ success: false, message: `Error: ${error.message}` });
     } finally {
       setIsSubmitting(false);
     }
   };
 
+  const handleDelete = async (id) => {
+    const reviewRef = dbRef(database, `reviews/${id}`);
+    await remove(reviewRef);
+  };
+
+  const handleEdit = (review) => {
+    setFormData({
+      name: review.name,
+      rating: review.rating,
+      text: review.text,
+      image: review.image // Keep the URL string for editing
+    });
+    setEditId(review.id);
+  };
+
   return (
-    <div className="flex flex-col items-center max-w-md mx-auto p-6 bg-white shadow-lg rounded-lg mt-10">
-      <h2 className="text-xl font-bold mb-4">Review Form</h2>
-      
-      {submitStatus.message && (
-        <div className={`w-full p-3 mb-4 rounded ${submitStatus.success ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-          {submitStatus.message}
-        </div>
-      )}
-      
-      <form onSubmit={handleSubmit}>
-        <label className="block mb-2 font-medium">Name:</label>
-        <input
-          type="text"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-          className="w-full p-2 border rounded mb-4"
-          required
-        />
-        
-        <label className="block mb-2 font-medium">Rating (1-5):</label>
-        <input
-          type="number"
-          name="rating"
-          value={formData.rating}
-          onChange={handleChange}
-          min="1"
-          max="5"
-          className="w-full p-2 border rounded mb-4"
-          required
-        />
-        
-        <label className="block mb-2 font-medium">Review:</label>
-        <textarea
-          name="text"
-          value={formData.text}
-          onChange={handleChange}
-          rows="4"
-          className="w-full p-2 border rounded mb-4"
-          required
-        ></textarea>
-        
-        <label className="block mb-2 font-medium">Image URL:</label>
-        <input
-          type="text"
-          name="image"
-          value={formData.image}
-          onChange={handleChange}
-          className="w-full p-2 border rounded mb-4"
-        />
-        
-        <button
-          type="submit"
-          className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 disabled:bg-blue-300"
-          disabled={isSubmitting}
-        >
-          {isSubmitting ? "Submitting..." : "Submit Review"}
-        </button>
-      </form>
+    <div className="container-review">
+      <div className="left-panel">
+        <h2>Review Form</h2>
+        {submitStatus.message && (
+          <div className={`message ${submitStatus.success ? 'success' : 'error'}`}>
+            {submitStatus.message}
+          </div>
+        )}
+        <form onSubmit={handleSubmit}>
+          <label>Name:</label>
+          <input
+            type="text"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            required
+          />
+
+          <label>Rating (1-5):</label>
+          <input
+            type="number"
+            name="rating"
+            value={formData.rating}
+            onChange={handleChange}
+            min="1"
+            max="5"
+            required
+          />
+
+          <label>Review:</label>
+          <textarea
+            name="text"
+            value={formData.text}
+            onChange={handleChange}
+            rows="4"
+            required
+          ></textarea>
+
+          <label>Image:</label>
+          <input
+            type="file" // Change to file input
+            name="image"
+            onChange={handleChange}
+            accept="image/*" // Accept only images
+          />
+          {formData.image && typeof formData.image === 'string' && (
+            <img src={formData.image} alt="Preview" className="image-preview" style={{ maxWidth: '200px' }} />
+          )}
+
+          <button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? "Submitting..." : editId ? "Update Review" : "Submit Review"}
+          </button>
+        </form>
+      </div>
+
+      <div className="right-panel">
+        <h2>All Reviews</h2>
+        {reviews.map((review) => (
+          <div key={review.id} className="review-card">
+            {review.image && <img src={review.image} alt={review.name} />}
+            <div className="review-content">
+              <h3>{review.name} ({review.rating}/5)</h3>
+              <p>{review.text}</p>
+              <div className="actions">
+                <button onClick={() => handleEdit(review)}>Edit</button>
+                <button onClick={() => handleDelete(review.id)} className="delete">Delete</button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
