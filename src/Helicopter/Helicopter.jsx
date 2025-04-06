@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Storage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
-import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc } from 'firebase/firestore';
+import { getStorage, ref as storageRef, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
+import { getDatabase, ref, push, onValue, update, remove } from 'firebase/database';
 
 import './Helicopter.css';
-
-
 
 const HelicopterManagement = () => {
   const [helicopters, setHelicopters] = useState([]);
@@ -24,22 +22,25 @@ const HelicopterManagement = () => {
   const [imagePreview, setImagePreview] = useState('');
   const [loading, setLoading] = useState(false);
 
+  const db = getDatabase();
+
   // Fetch helicopters on component mount
   useEffect(() => {
     fetchHelicopters();
   }, []);
 
-  const fetchHelicopters = async () => {
-    try {
-      const querySnapshot = await getDocs(collection(db, "helicopters"));
-      const helicoptersList = querySnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
+  const fetchHelicopters = () => {
+    const helicoptersRef = ref(db, 'helicopters');
+    onValue(helicoptersRef, (snapshot) => {
+      const data = snapshot.val();
+      const helicoptersList = data ? Object.entries(data).map(([id, value]) => ({
+        id,
+        ...value
+      })) : [];
       setHelicopters(helicoptersList);
-    } catch (error) {
+    }, (error) => {
       console.error("Error fetching helicopters: ", error);
-    }
+    });
   };
 
   const handleInputChange = (e) => {
@@ -108,12 +109,12 @@ const HelicopterManagement = () => {
       
       // Upload image to Firebase Storage
       if (imageFile) {
-        const storageRef = ref(storage, `helicopters/${Date.now()}_${imageFile.name}`);
-        await uploadBytes(storageRef, imageFile);
-        imageUrl = await getDownloadURL(storageRef);
+        const storageReference = storageRef(getStorage(), `helicopters/${Date.now()}_${imageFile.name}`);
+        await uploadBytes(storageReference, imageFile);
+        imageUrl = await getDownloadURL(storageReference);
       }
 
-      // Prepare data for Firestore
+      // Prepare data for Realtime Database
       const helicopterData = {
         ...formData,
         price: formData.price,
@@ -124,15 +125,13 @@ const HelicopterManagement = () => {
 
       if (isEditing && selectedHelicopter) {
         // Update existing helicopter
-        const helicopterRef = doc(db, "helicopters", selectedHelicopter.id);
-        await updateDoc(helicopterRef, helicopterData);
+        await update(ref(db, `helicopters/${selectedHelicopter.id}`), helicopterData);
       } else {
         // Add new helicopter
-        await addDoc(collection(db, "helicopters"), helicopterData);
+        await push(ref(db, 'helicopters'), helicopterData);
       }
 
       resetForm();
-      fetchHelicopters();
     } catch (error) {
       console.error("Error saving helicopter: ", error);
     } finally {
@@ -159,20 +158,18 @@ const HelicopterManagement = () => {
   const handleDelete = async (helicopterId, imageUrl) => {
     if (window.confirm("Are you sure you want to delete this helicopter?")) {
       try {
-        // Delete document from Firestore
-        await deleteDoc(doc(db, "helicopters", helicopterId));
+        // Delete from Realtime Database
+        await remove(ref(db, `helicopters/${helicopterId}`));
         
         // Delete image from Storage if it exists
         if (imageUrl) {
           try {
-            const imageRef = ref(storage, imageUrl);
-            await deleteObject(imageRef);
+            const imageReference = storageRef(getStorage(), imageUrl);
+            await deleteObject(imageReference);
           } catch (error) {
             console.error("Error deleting image: ", error);
           }
         }
-        
-        fetchHelicopters();
       } catch (error) {
         console.error("Error deleting helicopter: ", error);
       }
@@ -471,4 +468,3 @@ const HelicopterManagement = () => {
 };
 
 export default HelicopterManagement;
-  
