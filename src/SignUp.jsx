@@ -212,11 +212,7 @@ const SignUp = () => {
             </button>
           </form>
 
-          <div className="auth-divider"><h2 className="auth-divider-text">Or sign up with</h2></div>
-          <div className="social-login-buttons">
-            <button className="social-button" type="button" onClick={() => handleSocialSignUp('Google')}>Google</button>
-            <button className="social-button" type="button" onClick={() => handleSocialSignUp('Apple')}>Apple</button>
-          </div>
+          
 
           <div className="signup-footer">
             Already have an account? <a href="/">Log In</a>
