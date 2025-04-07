@@ -1,7 +1,8 @@
-// AparthotelForm.jsx
-import { useState } from "react";
-import { database, ref, push, set } from "../../src/firebaseConfig";
-import "./AparthotelForm.css"; // Import the custom CSS file
+import { useEffect, useState } from "react";
+import { ref, push, set, onValue, remove, update } from "firebase/database";
+import { storage, database } from "../../src/firebaseConfig";
+import { ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
+import "./AparthotelForm.css";
 
 export default function AparthotelForm() {
   const [formData, setFormData] = useState({
@@ -11,173 +12,171 @@ export default function AparthotelForm() {
     ratingText: "",
     reviewCount: "",
     price: "",
-    imageUrl:
-      "",
+    imageFile: null,
+    imageUrl: "",
   });
 
+  const [deals, setDeals] = useState([]);
+  const [editingKey, setEditingKey] = useState(null);
+
+  useEffect(() => {
+    const dealsRef = ref(database, "admin/Dealoftehday");
+    onValue(dealsRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        const loadedDeals = Object.entries(data).map(([key, value]) => ({
+          id: key,
+          ...value,
+        }));
+        setDeals(loadedDeals);
+      } else {
+        setDeals([]);
+      }
+    });
+  }, []);
+
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value, files } = e.target;
+    if (name === "imageFile") {
+      setFormData({ ...formData, imageFile: files[0] });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const newHotelRef = push(ref(database, "admin/Dealoftehday"));
-      await set(newHotelRef, formData);
-      alert("Data saved successfully!");
-    } catch (error) {
-      console.error("Error saving data:", error);
-      alert("Failed to save data.");
+
+    let imageUrl = formData.imageUrl;
+
+    if (formData.imageFile) {
+      const fileRef = storageRef(storage, `deal_images/${formData.imageFile.name}`);
+      await uploadBytes(fileRef, formData.imageFile);
+      imageUrl = await getDownloadURL(fileRef);
     }
+
+    const dataToSave = {
+      ...formData,
+      imageUrl,
+      imageFile: undefined,
+    };
+
+    if (editingKey) {
+      await update(ref(database, `admin/Dealoftehday/${editingKey}`), dataToSave);
+      setEditingKey(null);
+    } else {
+      const newHotelRef = push(ref(database, "admin/Dealoftehday"));
+      await set(newHotelRef, dataToSave);
+    }
+
+    alert("Data saved!");
+    setFormData({
+      name: "",
+      location: "",
+      rating: "",
+      ratingText: "",
+      reviewCount: "",
+      price: "",
+      imageFile: null,
+      imageUrl: "",
+    });
+  };
+
+  const handleEdit = (deal) => {
+    setFormData({ ...deal, imageFile: null });
+    setEditingKey(deal.id);
+  };
+
+  const handleDelete = async (id) => {
+    await remove(ref(database, `admin/Dealoftehday/${id}`));
+    alert("Deleted!");
   };
 
   return (
-    <div className="page-container">
-      <div className="form-container">
-        {/* Preview Section */}
-        <div className="preview-section">
-          <h3 className="preview-title">Preview</h3>
-          <div className="preview-card">
-            <img
-              src={formData.imageUrl}
-              alt="Hotel Preview"
-              className="preview-image"
-            />
-            <div className="preview-details">
-              <h4 className="preview-name">{formData.name}</h4>
-              <p className="preview-location">{formData.location}</p>
-              <div className="preview-rating">
-                <span className="rating-value">{formData.rating}</span>
-                <span className="rating-text">{formData.ratingText}</span>
-                <span className="review-count">({formData.reviewCount})</span>
-              </div>
-              <p className="preview-price">{formData.price} PLN</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Form Section */}
+   
+   <div className="main-containerdealoftheday">
+      <div className="form-section">
         <form onSubmit={handleSubmit}>
-          <h2 className="form-title">Deal of the Day</h2>
+          <h2>Deal of the Day</h2>
 
           <div className="form-group">
-            <label className="form-label">
-              Image URL
-              <span className="help-icon" title="Provide a valid URL to an image of the hotel">?</span>
-            </label>
-            <input
-              type="url"
-              name="imageUrl"
-              value={formData.imageUrl}
-              onChange={handleChange}
-              className="form-input"
-              placeholder="e.g., https://example.com/image.jpg"
-              title="Provide a valid URL to an image of the hotel"
-            />
+            <label>Upload Image</label>
+            <input type="file" name="imageFile" onChange={handleChange} />
           </div>
 
-          <div className="form-group">
-            <label className="form-label">
-              Name
-              <span className="help-icon" title="Enter the full name of the hotel">?</span>
-            </label>
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              className="form-input"
-              placeholder="e.g., Aparthotel Stare Miasto"
-              title="Enter the full name of the hotel"
-            />
-          </div>
+          <input
+            type="text"
+            name="name"
+            value={formData.name}
+            placeholder="Hotel Name"
+            onChange={handleChange}
+            required
+          />
+          <input
+            type="text"
+            name="location"
+            value={formData.location}
+            placeholder="Location"
+            onChange={handleChange}
+            required
+          />
+          <input
+            type="text"
+            name="rating"
+            value={formData.rating}
+            placeholder="Rating"
+            onChange={handleChange}
+            required
+          />
+          <input
+            type="text"
+            name="ratingText"
+            value={formData.ratingText}
+            placeholder="Rating Text"
+            onChange={handleChange}
+          />
+          <input
+            type="text"
+            name="reviewCount"
+            value={formData.reviewCount}
+            placeholder="Review Count"
+            onChange={handleChange}
+          />
+          <input
+            type="text"
+            name="price"
+            value={formData.price}
+            placeholder="Price in PLN"
+            onChange={handleChange}
+            required
+          />
 
-          <div className="form-group">
-            <label className="form-label">
-              Location
-              <span className="help-icon" title="Enter the city and country (e.g., Old Town, Poland, Kraków)">?</span>
-            </label>
-            <input
-              type="text"
-              name="location"
-              value={formData.location}
-              onChange={handleChange}
-              className="form-input"
-              placeholder="e.g., Old Town, Poland, Kraków"
-              title="Enter the city and country (e.g., Old Town, Poland, Kraków)"
-            />
-          </div>
-
-          <div className="form-grid">
-            <div className="form-group">
-              <label className="form-label">
-                Rating
-                <span className="help-icon" title="Enter a numerical rating out of 10 (e.g., 8.8)">?</span>
-              </label>
-              <input
-                type="text"
-                name="rating"
-                value={formData.rating}
-                onChange={handleChange}
-                className="form-input"
-                placeholder="e.g., 8.8"
-                title="Enter a numerical rating out of 10 (e.g., 8.8)"
-              />
-            </div>
-            <div className="form-group">
-              <label className="form-label">
-                Rating Text
-                <span className="help-icon" title="Enter a descriptive word for the rating (e.g., Fabulous)">?</span>
-              </label>
-              <input
-                type="text"
-                name="ratingText"
-                value={formData.ratingText}
-                onChange={handleChange}
-                className="form-input"
-                placeholder="e.g., Fabulous"
-                title="Enter a descriptive word for the rating (e.g., Fabulous)"
-              />
-            </div>
-          </div>
-
-          <div className="form-group">
-            <label className="form-label">
-              Review Count
-              <span className="help-icon" title="Enter the number of reviews (e.g., 3,177)">?</span>
-            </label>
-            <input
-              type="text"
-              name="reviewCount"
-              value={formData.reviewCount}
-              onChange={handleChange}
-              className="form-input"
-              placeholder="e.g., 3,177"
-              title="Enter the number of reviews (e.g., 3,177)"
-            />
-          </div>
-
-          <div className="form-group">
-            <label className="form-label">
-              Price (PLN)
-              <span className="help-icon" title="Enter the price in PLN (e.g., 8,141)">?</span>
-            </label>
-            <input
-              type="text"
-              name="price"
-              value={formData.price}
-              onChange={handleChange}
-              className="form-input"
-              placeholder="e.g., 8,141"
-              title="Enter the price in PLN (e.g., 8,141)"
-            />
-          </div>
-
-          <button type="submit" className="form-button">
-            Save Deal
-          </button>
+          <button type="submit">{editingKey ? "Update Deal" : "Save Deal"}</button>
         </form>
       </div>
+
+      <div className="preview-section">
+        <h2>All Deals</h2>
+        {deals.map((deal) => (
+          <div className="deal-card" key={deal.id}>
+            <img src={deal.imageUrl} alt={deal.name} />
+            <div>
+              <h4>{deal.name}</h4>
+              <p>{deal.location}</p>
+              <p>
+                <strong>{deal.rating}</strong> {deal.ratingText} ({deal.reviewCount})
+              </p>
+              <p>{deal.price} PLN</p>
+              <div className="action-buttons">
+                <button onClick={() => handleEdit(deal)}>Edit</button>
+                <button onClick={() => handleDelete(deal.id)}>Delete</button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
+  
+ 
   );
 }

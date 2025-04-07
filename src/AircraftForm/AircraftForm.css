@@ -479,6 +479,16 @@
     gap: 20px;
   }
   
+.image-preview-item img{
+  height: 70px;
+  width: 100px;
+}
+
+  .aircraft-card.edit-mode .aircraft-image img {
+    max-width: 100px;
+    max-height: 75px;
+    object-fit: cover;
+  }
   /* Aircraft card styling */
   .aircraft-card {
     border-radius: 10px;
@@ -644,3 +654,52 @@
     color: #b02a37;
   }
   
+  .file-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+  }
+  
+  .help-text {
+    display: block;
+    margin-top: 4px;
+    color: #666;
+    font-size: 0.85rem;
+  }
+
+  .aircraft-management {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  /* Alert styling */
+  .alert {
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.3s;
+  }
+  
+  .alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+  }
+  
+  .alert-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+  }

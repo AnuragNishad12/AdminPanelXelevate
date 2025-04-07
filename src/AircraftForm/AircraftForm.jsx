@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { ref, push, set, onValue, remove } from "firebase/database";
-import { database } from "../firebaseConfig";
+import { ref as storageRef, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
+import { database, storage } from "../firebaseConfig";
 import "./AircraftForm.css";
 
 const AircraftForm = () => {
@@ -10,7 +11,7 @@ const AircraftForm = () => {
     aircraftType: "",
     destination: "",
     price: "",
-    images: ["", "", "", ""],
+    images: [],
     shortDescription: "",
     aircraftDetails: {
       guestCapacity: 0,
@@ -53,6 +54,12 @@ const AircraftForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [editId, setEditId] = useState(null);
+  
+  // File upload states
+  const [imageFiles, setImageFiles] = useState([]);
+  const [imagePreviewUrls, setImagePreviewUrls] = useState([]);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const fileInputRef = useRef(null);
 
   // Fetch aircraft data
   useEffect(() => {
@@ -107,14 +114,85 @@ const AircraftForm = () => {
     }));
   };
 
-  // Handle image array changes
-  const handleImageChange = (index, value) => {
-    const newImages = [...formData.images];
-    newImages[index] = value;
-    setFormData(prev => ({
-      ...prev,
-      images: newImages
-    }));
+  // Trigger file input click
+  const handleBrowseClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  // Handle image selection
+  const handleImageSelect = (e) => {
+    const files = Array.from(e.target.files);
+    
+    // Limit to 4 images
+    if (files.length > 4) {
+      setAlert({
+        show: true,
+        type: "error",
+        message: "You can only select up to 4 images"
+      });
+      setTimeout(() => {
+        setAlert({ show: false, type: "", message: "" });
+      }, 3000);
+      return;
+    }
+    
+    // Clear existing selections if selecting new files in non-edit mode
+    if (!editMode) {
+      setImageFiles(files);
+      
+      // Generate preview URLs
+      const newPreviews = [];
+      files.forEach(file => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          newPreviews.push(reader.result);
+          if (newPreviews.length === files.length) {
+            setImagePreviewUrls(newPreviews);
+          }
+        };
+        reader.readAsDataURL(file);
+      });
+    } else {
+      // In edit mode, only allow selecting up to 4 images total
+      const totalImagesAfterAdd = imageFiles.length + files.length;
+      if (totalImagesAfterAdd > 4) {
+        setAlert({
+          show: true,
+          type: "error",
+          message: "You can only have a maximum of 4 images"
+        });
+        setTimeout(() => {
+          setAlert({ show: false, type: "", message: "" });
+        }, 3000);
+        return;
+      }
+      
+      // Add new files to existing ones
+      setImageFiles(prev => [...prev, ...files]);
+      
+      // Generate preview URLs for new files
+      files.forEach(file => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setImagePreviewUrls(prev => [...prev, reader.result]);
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+  };
+
+  // Remove image from selection
+  const removeImage = (index) => {
+    const newFiles = [...imageFiles];
+    const newPreviews = [...imagePreviewUrls];
+    
+    newFiles.splice(index, 1);
+    newPreviews.splice(index, 1);
+    
+    setImageFiles(newFiles);
+    setImagePreviewUrls(newPreviews);
   };
 
   // Reset form
@@ -122,6 +200,12 @@ const AircraftForm = () => {
     setFormData(initialFormData);
     setEditMode(false);
     setEditId(null);
+    setImageFiles([]);
+    setImagePreviewUrls([]);
+    setUploadProgress(0);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
   };
 
   // Load aircraft data for editing
@@ -129,6 +213,11 @@ const AircraftForm = () => {
     setFormData({...aircraft});
     setEditMode(true);
     setEditId(aircraft.id);
+    
+    // Reset image states
+    setImageFiles([]);
+    setImagePreviewUrls(aircraft.images || []);
+    
     window.scrollTo(0, 0);
   };
 
@@ -136,8 +225,36 @@ const AircraftForm = () => {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this aircraft?")) {
       try {
+        // First, get the aircraft to access its image URLs
         const aircraftRef = ref(database, `aircraft/${id}`);
+        const snapshot = await new Promise((resolve) => {
+          onValue(aircraftRef, resolve, { onlyOnce: true });
+        });
+        
+        const aircraft = snapshot.val();
+        
+        // Delete images from storage if they exist
+        if (aircraft && aircraft.images && aircraft.images.length > 0) {
+          const deletePromises = aircraft.images.map(async (imageUrl) => {
+            try {
+              // Extract the file path from the URL
+              const urlPath = imageUrl.split('?')[0];
+              const fileName = urlPath.split('/').pop();
+              const imagePath = `aircraft_images/${id}/${fileName}`;
+              const imageRef = storageRef(storage, imagePath);
+              
+              await deleteObject(imageRef);
+            } catch (error) {
+              console.error("Error deleting image:", error);
+            }
+          });
+          
+          await Promise.all(deletePromises);
+        }
+        
+        // Then delete the database entry
         await remove(aircraftRef);
+        
         setAlert({
           show: true,
           type: "success",
@@ -157,32 +274,114 @@ const AircraftForm = () => {
     }
   };
 
+  // Upload images to Firebase Storage
+  const uploadImages = async (aircraftId) => {
+    if (imageFiles.length === 0 && imagePreviewUrls.length === 0) {
+      return [];
+    }
+    
+    // If in edit mode and no new files are selected, return existing URLs
+    if (editMode && imageFiles.length === 0 && imagePreviewUrls.length > 0) {
+      return formData.images || [];
+    }
+    
+    const uploadPromises = [];
+    const urls = [];
+    
+    // Upload new files
+    for (let i = 0; i < imageFiles.length; i++) {
+      const file = imageFiles[i];
+      const fileName = `${Date.now()}_${file.name}`;
+      const imageRef = storageRef(storage, `aircraft_images/${aircraftId}/${fileName}`);
+      
+      const uploadTask = uploadBytes(imageRef, file)
+        .then(snapshot => {
+          setUploadProgress((i + 1) / imageFiles.length * 100);
+          return getDownloadURL(snapshot.ref);
+        })
+        .then(url => {
+          urls.push(url);
+        });
+      
+      uploadPromises.push(uploadTask);
+    }
+    
+    // Wait for all uploads to complete
+    await Promise.all(uploadPromises);
+    
+    // If in edit mode, include existing URLs that weren't replaced
+    if (editMode && formData.images) {
+      const existingUrls = formData.images.filter(url => imagePreviewUrls.includes(url));
+      return [...existingUrls, ...urls];
+    }
+    
+    return urls;
+  };
+
   // Save data to Firebase
   const handleSave = async () => {
+    // Validate that we have at least one image
+    if (imageFiles.length === 0 && (!editMode || (editMode && imagePreviewUrls.length === 0))) {
+      setAlert({
+        show: true,
+        type: "error",
+        message: "Please select at least one image"
+      });
+      setTimeout(() => {
+        setAlert({ show: false, type: "", message: "" });
+      }, 3000);
+      return;
+    }
+    
+    // Validate that we have no more than 4 images
+    if (imageFiles.length > 4 || (editMode && imagePreviewUrls.length > 4)) {
+      setAlert({
+        show: true,
+        type: "error",
+        message: "You can only have a maximum of 4 images"
+      });
+      setTimeout(() => {
+        setAlert({ show: false, type: "", message: "" });
+      }, 3000);
+      return;
+    }
+    
     setIsSubmitting(true);
+    
     try {
-      // Reference to the 'aircraft' node in the database
+      // Create a reference to the database
       const aircraftRef = editMode
         ? ref(database, `aircraft/${editId}`) 
         : push(ref(database, 'aircraft'));
       
-      // Prepare data (remove any temporary fields)
-      const dataToSave = { ...formData };
+      // Get the ID (either existing or newly generated)
+      const aircraftId = editMode ? editId : aircraftRef.key;
+      
+      // Upload images to Firebase Storage
+      const imageUrls = await uploadImages(aircraftId);
+      
+      // Prepare data
+      const dataToSave = { 
+        ...formData,
+        images: imageUrls,
+      };
+      
+      // Remove ID if present
       if (dataToSave.id) {
-        delete dataToSave.id; // Don't save the ID as a field
+        delete dataToSave.id;
       }
-
-      // Save data
+      
+      // Save to Realtime Database
       await set(aircraftRef, dataToSave);
       
-      // Show success alert
+      // Show success message
       setAlert({
         show: true,
         type: "success",
         message: editMode ? "Aircraft updated successfully!" : "Aircraft added successfully!"
       });
       
-      // Reset form after successful save
+      // Reset form
       resetForm();
       
       // Clear alert after 3 seconds
@@ -199,6 +398,7 @@ const AircraftForm = () => {
       });
     } finally {
       setIsSubmitting(false);
+      setUploadProgress(0);
     }
   };
 
@@ -292,21 +492,72 @@ const AircraftForm = () => {
               </div>
             </div>
             
-            {/* Images */}
+            {/* Images Upload */}
             <div className="form-section">
-              <h2 className="section-title">Images</h2>
+              <h2 className="section-title">Images (Max 4)</h2>
               
-              {formData.images.map((url, index) => (
-                <div className="form-group" key={index}>
-                  <label>Image URL {index + 1}</label>
+              <div className="form-group">
+                <label>Upload Images</label>
+                {/* Added visible button for selecting files */}
+                <div className="file-upload-container">
+                  <button 
+                    type="button" 
+                    className="btn btn-secondary file-select-btn"
+                    onClick={handleBrowseClick}
+                  >
+                    Browse Files
+                  </button>
+                  <span className="selected-file-info">
+                    {imageFiles.length > 0 ? `${imageFiles.length} file(s) selected` : "No files selected"}
+                  </span>
                   <input
-                    type="text"
-                    value={url}
-                    onChange={(e) => handleImageChange(index, e.target.value)}
-                    placeholder="Enter image URL"
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={handleImageSelect}
+                    ref={fileInputRef}
+                    className="file-input"
+                    style={{ display: 'none' }} // Hide the actual input
                   />
                 </div>
-              ))}
+                <small className="help-text">Select up to 4 images for the aircraft</small>
+              </div>
+              
+              {/* Image Previews */}
+              {imagePreviewUrls.length > 0 && (
+                <div className="image-previews">
+                  {imagePreviewUrls.map((url, index) => (
+                    <div className="image-preview-item" key={index}>
+                      <img 
+                        src={url} 
+                        alt={`Preview ${index + 1}`} 
+                      />
+                      <button 
+                        type="button" 
+                        className="remove-image-btn"
+                        onClick={() => removeImage(index)}
+                      >
+                        <svg viewBox="0 0 24 24" width="16" height="16">
+                          <path fill="currentColor" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+                        </svg>
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+              
+              {/* Upload Progress */}
+              {uploadProgress > 0 && (
+                <div className="upload-progress">
+                  <div className="progress-bar">
+                    <div 
+                      className="progress-bar-fill" 
+                      style={{ width: `${uploadProgress}%` }}
+                    ></div>
+                  </div>
+                  <span className="progress-text">{uploadProgress.toFixed(0)}% Uploaded</span>
+                </div>
+              )}
             </div>
             
             {/* Aircraft Details */}

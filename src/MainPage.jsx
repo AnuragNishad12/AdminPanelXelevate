@@ -10,8 +10,9 @@ const cardData = [
   { title: "Aircraft", route: "/Aircraft" },
   { title: "Blogs", route: "/Blogs" },
   { title: "Helicopter", route: "/Helicopter" },
-  { title: "Notifications", route: "/notifications" },
-  { title: "Logout", route: "/logout" },
+  { title: "Customer Review in helicopter", route: "/Reviewhelicopter" },
+  // { title: "Customer Review Helicopter", route: "/logout" },
+  { title: "Helicopter Enquiry", route: "/HelicopterEnquiry" },
 ];
 
 const MainPage = () => {
