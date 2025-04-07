@@ -20,6 +20,8 @@
 .list-section {
   flex: 1.5;
   min-width: 650px;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Card Styles */
@@ -44,6 +46,7 @@
 /* Form Styles */
 .form-group {
   margin-bottom: 20px;
+  background-color: #161617;
 }
 .form-group label {
   color: black;
@@ -336,15 +339,30 @@ input:focus, textarea:focus, select:focus {
   color: #64748b;
 }
 
+
+
 /* Helicopter List */
-.helicopter-list {
+/* .helicopter-list {
+  max-height: 600px; 
+  overflow-y: auto;
+  padding-right: 10px; 
   display: flex;
   flex-direction: column;
   gap: 20px;
   margin-top: 24px;
-  max-height: 800px;
+  max-height: 1500px;
   overflow-y: auto;
   padding-right: 8px;
+} */
+
+.helicopter-list {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding-right: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 24px;
 }
 
 .helicopter-card {

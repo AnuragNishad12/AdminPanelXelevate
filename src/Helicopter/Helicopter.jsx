@@ -212,9 +212,9 @@ const HelicopterManagement = () => {
             
             <div className="form-row">
               <div className="form-group">
-                <label>Price ($/hour)</label>
+                <label>Price (&#8377;/hour)</label>
                 <div className="price-input">
-                  <span className="price-symbol">$</span>
+                  <span className="price-symbol">&#8377;</span>
                   <input
                     type="text"
                     name="price"
