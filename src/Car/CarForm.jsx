@@ -82,7 +82,7 @@ const CarForm = () => {
     try {
       let downloadURL = editingCar?.img || "";
 
-      // Upload new image if provided
+    
       if (imageFile) {
         const imageRef = ref(storage, `car_images/${uuidv4()}`);
         const uploadTask = uploadBytesResumable(imageRef, imageFile);
@@ -177,13 +177,13 @@ const CarForm = () => {
         <div className="car-form-container">
           <h2 className="form-title">{editingCar ? "Update Car Details" : "Add Car Details"}</h2>
           <form onSubmit={handleSubmit} className="car-form">
-            <div className="form-group">
+            <div className="form-groupimage">
               <label>Car Image</label>
               <input
                 type="file"
                 accept="image/*"
                 onChange={handleImageChange}
-                className="file-input"
+                className="file-inputImage"
               />
               {imagePreview && (
                 <div className="image-preview">

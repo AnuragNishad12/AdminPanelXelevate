@@ -1,6 +1,4 @@
-/* CarForm.css */
 
-/* Container layout */
 .car-management-container {
     display: flex;
     gap: 30px;
@@ -20,7 +18,7 @@
     flex: 1.5;
   }
   
-  /* Form styling */
+
   .car-form-container {
     background-color: #000000;
     border-radius: 12px;
@@ -88,17 +86,7 @@
     resize: vertical;
   }
   
-  .file-input {
-    padding: 10px;
-    border: 1px dashed #cbd5e0;
-    border-radius: 8px;
-    background-color: #f7fafc;
-    cursor: pointer;
-  }
   
-  .file-input:hover {
-    background-color: #edf2f7;
-  }
   
   .image-preview {
     width: 100%;
@@ -156,7 +144,7 @@
     background-color: #dde4e6;
   }
   
-  /* Car list styling */
+
   .car-list {
     display: flex;
     flex-direction: column;
@@ -274,8 +262,7 @@
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   }
-  
-  /* Responsive design */
+
   @media screen and (max-width: 1024px) {
     .car-management-container {
       flex-direction: column;
