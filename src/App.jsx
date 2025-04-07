@@ -18,7 +18,7 @@ import BookingsDisplay from './BookingsDisplay/BookingsDisplay';
 function App() {
   const [count, setCount] = useState(0);
 
-  const Dashboard = () => <h2>Dashboard Page</h2>; 
+  // const Dashboard = () => <h2>Dashboard Page</h2>; 
 
   return (
     <>

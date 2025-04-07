@@ -13,6 +13,7 @@ const cardData = [
   { title: "Customer Review in helicopter", route: "/Reviewhelicopter" },
   // { title: "Customer Review Helicopter", route: "/logout" },
   { title: "Helicopter Enquiry", route: "/HelicopterEnquiry" },
+  { title: "Sign Up", route: "/SignUp" },
 ];
 
 const MainPage = () => {
