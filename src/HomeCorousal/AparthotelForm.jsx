@@ -55,10 +55,15 @@ export default function AparthotelForm() {
       imageUrl = await getDownloadURL(fileRef);
     }
 
+    // Create a new object with only the properties we want to save
     const dataToSave = {
-      ...formData,
-      imageUrl,
-      imageFile: undefined,
+      name: formData.name,
+      location: formData.location,
+      rating: formData.rating,
+      ratingText: formData.ratingText,
+      reviewCount: formData.reviewCount,
+      price: formData.price,
+      imageUrl: imageUrl,
     };
 
     if (editingKey) {
@@ -93,8 +98,7 @@ export default function AparthotelForm() {
   };
 
   return (
-   
-   <div className="main-containerdealoftheday">
+    <div className="main-containerdealoftheday">
       <div className="form-section">
         <form onSubmit={handleSubmit}>
           <h2>Deal of the Day</h2>
@@ -176,7 +180,5 @@ export default function AparthotelForm() {
         ))}
       </div>
     </div>
-  
- 
   );
 }
