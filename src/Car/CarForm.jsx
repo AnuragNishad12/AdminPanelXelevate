@@ -7,7 +7,9 @@ import {
   deleteObject 
 } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
-import { database, storage } from "../firebaseConfig";
+import { database, storage } from "../firebaseConfig"; // Make sure this path matches your setup
+import '../Car/CarForm.css'
+
 
 const CarForm = () => {
   const [formData, setFormData] = useState({
