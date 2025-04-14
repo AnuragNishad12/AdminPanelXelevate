@@ -275,230 +275,213 @@ function YachtManagementSystem() {
   };
 
   return (
-    <div className="flex flex-col md:flex-row p-4 gap-6">
+    <div className="yacht-container">
       {/* Form Section */}
-      <div className="w-full md:w-1/2 bg-white p-6 rounded-lg shadow">
-        <h2 className="text-2xl font-bold mb-6">{editingId ? 'Edit Yacht' : 'Add New Yacht'}</h2>
+      <div className="form-section">
+        <h2>{editingId ? 'Edit Yacht' : 'Add New Yacht'}</h2>
         
-        <form id="yachtForm" onSubmit={handleSubmit} className="space-y-4">
+        <form id="yachtForm" onSubmit={handleSubmit} className="space-y">
           {/* Basic Information */}
-          <div className="space-y-4">
-            <h3 className="text-xl font-semibold">Basic Information</h3>
+          <div className="space-y">
+            <h3 className="form-section-title">Basic Information</h3>
             
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Name</label>
+            <div className="form-group">
+              <label>Name</label>
               <input
                 type="text"
                 name="name"
                 value={formData.name}
                 onChange={handleInputChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 required
               />
             </div>
             
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Price (per week)</label>
+            <div className="form-group">
+              <label>Price (per week)</label>
               <input
                 type="text"
                 name="price"
                 value={formData.price}
                 onChange={handleInputChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 required
               />
             </div>
             
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Route</label>
+            <div className="form-group">
+              <label>Route</label>
               <input
                 type="text"
                 name="route"
                 value={formData.route}
                 onChange={handleInputChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 required
               />
             </div>
           </div>
           
           {/* Images */}
-          <div className="space-y-4">
-            <h3 className="text-xl font-semibold">Images</h3>
+          <div className="space-y">
+            <h3 className="form-section-title">Images</h3>
             
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Cover Image</label>
+            <div className="form-group">
+              <label>Cover Image</label>
               <input
                 id="coverImage"
                 type="file"
                 accept="image/*"
                 onChange={handleCoverImageChange}
-                className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
                 required={!editingId}
               />
-              {editingId && <p className="text-sm text-gray-500 mt-1">Leave empty to keep current image</p>}
+              {editingId && <p className="help-text">Leave empty to keep current image</p>}
             </div>
             
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Additional Images (max 5)</label>
+            <div className="form-group">
+              <label>Additional Images (max 5)</label>
               <input
                 id="additionalImages"
                 type="file"
                 accept="image/*"
                 multiple
                 onChange={handleAdditionalImagesChange}
-                className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
               />
-              {editingId && <p className="text-sm text-gray-500 mt-1">Upload new images to replace existing ones</p>}
+              {editingId && <p className="help-text">Upload new images to replace existing ones</p>}
             </div>
           </div>
           
           {/* Specifications */}
-          <div className="space-y-4">
-            <h3 className="text-xl font-semibold">Specifications</h3>
+          <div className="space-y">
+            <h3 className="form-section-title">Specifications</h3>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Length</label>
+            <div className="specs-grid">
+              <div className="form-group">
+                <label>Length</label>
                 <input
                   type="text"
                   name="specifications.length"
                   value={formData.specifications.length}
                   onChange={handleInputChange}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 />
               </div>
               
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Beam</label>
+              <div className="form-group">
+                <label>Beam</label>
                 <input
                   type="text"
                   name="specifications.beam"
                   value={formData.specifications.beam}
                   onChange={handleInputChange}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 />
               </div>
               
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Draft</label>
+              <div className="form-group">
+                <label>Draft</label>
                 <input
                   type="text"
                   name="specifications.draft"
                   value={formData.specifications.draft}
                   onChange={handleInputChange}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 />
               </div>
               
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Gross Tonnage</label>
+              <div className="form-group">
+                <label>Gross Tonnage</label>
                 <input
                   type="text"
                   name="specifications.grossTonnage"
                   value={formData.specifications.grossTonnage}
                   onChange={handleInputChange}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 />
               </div>
               
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Cruising Speed</label>
+              <div className="form-group">
+                <label>Cruising Speed</label>
                 <input
                   type="text"
                   name="specifications.cruisingSpeed"
                   value={formData.specifications.cruisingSpeed}
                   onChange={handleInputChange}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 />
               </div>
               
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Max Speed</label>
+              <div className="form-group">
+                <label>Max Speed</label>
                 <input
                   type="text"
                   name="specifications.maxSpeed"
                   value={formData.specifications.maxSpeed}
                   onChange={handleInputChange}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 />
               </div>
               
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Built</label>
+              <div className="form-group">
+                <label>Built</label>
                 <input
                   type="text"
                   name="specifications.built"
                   value={formData.specifications.built}
                   onChange={handleInputChange}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 />
               </div>
               
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Builder</label>
+              <div className="form-group">
+                <label>Builder</label>
                 <input
                   type="text"
                   name="specifications.builder"
                   value={formData.specifications.builder}
                   onChange={handleInputChange}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 />
               </div>
               
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Exterior</label>
+              <div className="form-group">
+                <label>Exterior</label>
                 <input
                   type="text"
                   name="specifications.exterior"
                   value={formData.specifications.exterior}
                   onChange={handleInputChange}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 />
               </div>
               
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Interior</label>
+              <div className="form-group">
+                <label>Interior</label>
                 <input
                   type="text"
                   name="specifications.interior"
                   value={formData.specifications.interior}
                   onChange={handleInputChange}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 />
               </div>
               
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Guests</label>
+              <div className="form-group">
+                <label>Guests</label>
                 <input
                   type="number"
                   name="specifications.guests"
                   value={formData.specifications.guests}
                   onChange={handleInputChange}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 />
               </div>
               
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Cabins</label>
+              <div className="form-group">
+                <label>Cabins</label>
                 <input
                   type="number"
                   name="specifications.cabins"
                   value={formData.specifications.cabins}
                   onChange={handleInputChange}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 />
               </div>
             </div>
           </div>
           
           {/* Submit Button */}
-          <div className="flex justify-between pt-4">
+          <div className="button-container">
             {editingId && (
               <button
                 type="button"
                 onClick={cancelEdit}
-                className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+                className="button button-secondary"
                 disabled={loading}
               >
                 Cancel
@@ -506,7 +489,7 @@ function YachtManagementSystem() {
             )}
             <button
               type="submit"
-              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              className="button button-primary"
               disabled={loading}
             >
               {loading ? 'Processing...' : editingId ? 'Update Yacht' : 'Add Yacht'}
@@ -516,59 +499,59 @@ function YachtManagementSystem() {
       </div>
       
       {/* Yacht List Section */}
-      <div className="w-full md:w-1/2">
-        <h2 className="text-2xl font-bold mb-6">Yacht List</h2>
+      <div className="list-section">
+        <h2>Yacht List</h2>
         
         {yachts.length === 0 ? (
-          <div className="bg-white p-6 rounded-lg shadow text-center">
-            <p className="text-gray-500">No yachts added yet</p>
+          <div className="empty-list">
+            <p>No yachts added yet</p>
           </div>
         ) : (
-          <div className="space-y-4">
+          <div className="yacht-list">
             {yachts.map((yacht) => (
-              <div key={yacht.id} className="bg-white p-4 rounded-lg shadow">
-                <div className="flex flex-col md:flex-row">
+              <div key={yacht.id} className="yacht-card">
+                <div className="yacht-content">
                   {/* Yacht Image */}
-                  <div className="w-full md:w-1/3 mb-4 md:mb-0">
+                  <div className="yacht-image-container">
                     {yacht.image ? (
                       <img 
                         src={yacht.image} 
                         alt={yacht.name} 
-                        className="w-full h-48 object-cover rounded-md"
+                        className="yacht-image"
                       />
                     ) : (
-                      <div className="w-full h-48 bg-gray-200 flex items-center justify-center rounded-md">
-                        <span className="text-gray-400">No Image</span>
+                      <div className="no-image">
+                        <span>No Image</span>
                       </div>
                     )}
                   </div>
                   
                   {/* Yacht Details */}
-                  <div className="w-full md:w-2/3 md:pl-4">
-                    <h3 className="text-xl font-bold">{yacht.name}</h3>
-                    <p className="text-blue-600 font-semibold">{yacht.price}</p>
-                    <p className="text-gray-600">{yacht.route}</p>
+                  <div className="yacht-details">
+                    <h3 className="yacht-name">{yacht.name}</h3>
+                    <p className="yacht-price">{yacht.price}</p>
+                    <p className="yacht-route">{yacht.route}</p>
                     
-                    <div className="mt-2">
-                      <h4 className="font-semibold">Specifications:</h4>
-                      <div className="grid grid-cols-2 gap-1 text-sm">
-                        <p><span className="font-medium">Length:</span> {yacht.specifications?.length}</p>
-                        <p><span className="font-medium">Guests:</span> {yacht.specifications?.guests}</p>
-                        <p><span className="font-medium">Cabins:</span> {yacht.specifications?.cabins}</p>
-                        <p><span className="font-medium">Builder:</span> {yacht.specifications?.builder}</p>
+                    <div className="yacht-specs">
+                      <h4>Specifications:</h4>
+                      <div className="specs-display-grid">
+                        <p><span className="spec-label">Length:</span> {yacht.specifications?.length}</p>
+                        <p><span className="spec-label">Guests:</span> {yacht.specifications?.guests}</p>
+                        <p><span className="spec-label">Cabins:</span> {yacht.specifications?.cabins}</p>
+                        <p><span className="spec-label">Builder:</span> {yacht.specifications?.builder}</p>
                       </div>
                     </div>
                     
-                    <div className="mt-4 flex space-x-2">
+                    <div className="yacht-actions">
                       <button
                         onClick={() => handleEdit(yacht)}
-                        className="px-3 py-1 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700"
+                        className="button button-primary button-small"
                       >
                         Edit
                       </button>
                       <button
                         onClick={() => handleDelete(yacht)}
-                        className="px-3 py-1 bg-red-600 text-white text-sm rounded-md hover:bg-red-700"
+                        className="button button-danger button-small"
                         disabled={loading}
                       >
                         Delete
