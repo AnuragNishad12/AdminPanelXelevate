@@ -12,8 +12,9 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import SignUp from './SignUp';
 import SignIn from './SignIn';
 import LuxuryJetForm from './Blogs/LuxuryJetForm';
-import TestimonialForm from './CustomerRevuiewHelicopter/TestimonialForm';
+// import TestimonialForm from './CustomerRevuiewHelicopter/TestimonialForm';
 import BookingsDisplay from './BookingsDisplay/BookingsDisplay';
+import YachtManager from './YachtManager/YachtManager';
 
 function App() {
   const [count, setCount] = useState(0);
@@ -33,7 +34,7 @@ function App() {
           <Route path="/Aircraft" element={<AircraftForm />} />
           <Route path="/Blogs" element={<LuxuryJetForm />} />
           <Route path="/Helicopter" element={<Helicopter />} />
-          <Route path="/Reviewhelicopter" element={<TestimonialForm />} />
+          <Route path="/YatchManager" element={<YachtManager />} />
           <Route path="/HelicopterEnquiry" element={<BookingsDisplay />} />
         </Routes>
       </Router>
