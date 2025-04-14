@@ -13,7 +13,7 @@
   width: 100%;
   min-height: 100vh;
   padding: 20px;
-  background-color: #000000;
+  background-color: #161617;
   gap: 20px;
   overflow-x: auto; 
 
@@ -82,7 +82,7 @@ button[type="submit"]:hover {
 /* Preview Section (Right Side) */
 .preview-section {
   flex: 2;
-  background-color: #ffffff;
+  background-color: #000000;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -91,7 +91,7 @@ button[type="submit"]:hover {
 
 .preview-section h2 {
   margin-bottom: 20px;
-  color: #333;
+  color: #ffffff;
   font-size: 24px;
 }
 

@@ -97,6 +97,7 @@ export default function ReviewForm() {
   };
 
   return (
+    <div className="container-ReviewForm">
     <div className="container-review">
       <div className="left-panel">
         <h2>Review Form</h2>
@@ -168,6 +169,7 @@ export default function ReviewForm() {
           </div>
         ))}
       </div>
+    </div>
     </div>
   );
 }

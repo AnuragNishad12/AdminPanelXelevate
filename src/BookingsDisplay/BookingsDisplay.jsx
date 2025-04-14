@@ -1,12 +1,11 @@
-// BookingsDisplay.js
 import { useState, useEffect } from 'react';
-import { ref, onValue, off } from 'firebase/database';
+import { ref, onValue, off, remove } from 'firebase/database'; // Add remove import here
 import { database } from '../firebaseConfig';
 import '../BookingsDisplay/BookingsDisplay.css';
 
 const BookingsDisplay = () => {
   const [bookings, setBookings] = useState([]);
-
+  
   // Fetch bookings from Firebase
   useEffect(() => {
     const bookingsRef = ref(database, 'bookings');
@@ -25,11 +24,10 @@ const BookingsDisplay = () => {
     }, (error) => {
       console.error('Error fetching bookings:', error);
     });
-
+    
     return () => off(bookingsRef, 'value', unsubscribe);
   }, []);
-
-
+  
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this booking?')) {
       try {
@@ -42,9 +40,7 @@ const BookingsDisplay = () => {
       }
     }
   };
-
-
-
+  
   return (
     <div className="bookings-container">
       <h2>Bookings</h2>
@@ -65,8 +61,8 @@ const BookingsDisplay = () => {
                   <strong>Booked on:</strong> {new Date(booking.createdAt).toLocaleString()}
                 </p>
               )}
-              <button 
-                onClick={() => handleDelete(booking.id)} 
+              <button
+                onClick={() => handleDelete(booking.id)}
                 className="delete-button"
               >
                 Delete
