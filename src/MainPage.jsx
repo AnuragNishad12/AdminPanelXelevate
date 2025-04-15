@@ -5,15 +5,22 @@ import "./MainPage.css";
 
 const cardData = [
   { title: "Deal of The day", route: "/Dealoftheday" },
-  { title: "Cars", route: "/Cars" },
-  { title: "Customer Review", route: "/CustomerReview" },
   { title: "Aircraft", route: "/Aircraft" },
-  { title: "Blogs", route: "/Blogs" },
   { title: "Helicopter", route: "/Helicopter" },
   { title: "Yatch Manager", route: "/YatchManager" },
+  { title: "Cars", route: "/Cars" },
+
+
+
+  
+ 
+
+  
   // { title: "Customer Review Helicopter", route: "/logout" },
-  { title: "Helicopter Enquiry", route: "/HelicopterEnquiry" },
+  // { title: "Helicopter Enquiry", route: "/HelicopterEnquiry" },
   { title: "Client Enquiry", route: "/ClientEnquiry" },
+  { title: "Customer Review", route: "/CustomerReview" },
+  { title: "Blogs", route: "/Blogs" },
   { title: "Sign Up", route: "/SignUp" },
  
 ];
