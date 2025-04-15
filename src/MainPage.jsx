@@ -9,13 +9,6 @@ const cardData = [
   { title: "Helicopter", route: "/Helicopter" },
   { title: "Yatch Manager", route: "/YatchManager" },
   { title: "Cars", route: "/Cars" },
-
-
-
-  
- 
-
-  
   // { title: "Customer Review Helicopter", route: "/logout" },
   // { title: "Helicopter Enquiry", route: "/HelicopterEnquiry" },
   { title: "Client Enquiry", route: "/ClientEnquiry" },
