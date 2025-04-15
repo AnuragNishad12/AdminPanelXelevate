@@ -6,12 +6,12 @@ import "./AparthotelForm.css";
 
 export default function AparthotelForm() {
   const [formData, setFormData] = useState({
-    name: "",
-    location: "",
-    rating: "",
-    ratingText: "",
-    reviewCount: "",
-    price: "",
+    from: "",
+    aircraft: "",
+    capacity: "",
+    date: "",
+    time: "",
+    quote: "",
     imageFile: null,
     imageUrl: "",
   });
@@ -55,14 +55,13 @@ export default function AparthotelForm() {
       imageUrl = await getDownloadURL(fileRef);
     }
 
-    // Create a new object with only the properties we want to save
     const dataToSave = {
-      name: formData.name,
-      location: formData.location,
-      rating: formData.rating,
-      ratingText: formData.ratingText,
-      reviewCount: formData.reviewCount,
-      price: formData.price,
+      from: formData.from,
+      aircraft: formData.aircraft,
+      capacity: formData.capacity,
+      date: formData.date,
+      time: formData.time,
+      quote: formData.quote,
       imageUrl: imageUrl,
     };
 
@@ -70,18 +69,18 @@ export default function AparthotelForm() {
       await update(ref(database, `admin/Dealoftehday/${editingKey}`), dataToSave);
       setEditingKey(null);
     } else {
-      const newHotelRef = push(ref(database, "admin/Dealoftehday"));
-      await set(newHotelRef, dataToSave);
+      const newDealRef = push(ref(database, "admin/Dealoftehday"));
+      await set(newDealRef, dataToSave);
     }
 
     alert("Data saved!");
     setFormData({
-      name: "",
-      location: "",
-      rating: "",
-      ratingText: "",
-      reviewCount: "",
-      price: "",
+      from: "",
+      aircraft: "",
+      capacity: "",
+      date: "",
+      time: "",
+      quote: "",
       imageFile: null,
       imageUrl: "",
     });
@@ -110,47 +109,49 @@ export default function AparthotelForm() {
 
           <input
             type="text"
-            name="name"
-            value={formData.name}
-            placeholder="Hotel Name"
+            name="from"
+            value={formData.from}
+            placeholder="From (e.g., Delhi to Mumbai)"
             onChange={handleChange}
             required
           />
           <input
             type="text"
-            name="location"
-            value={formData.location}
-            placeholder="Location"
+            name="aircraft"
+            value={formData.aircraft}
+            placeholder="Service (e.g., Citation XL)"
             onChange={handleChange}
             required
           />
           <input
             type="text"
-            name="rating"
-            value={formData.rating}
-            placeholder="Rating"
+            name="capacity"
+            value={formData.capacity}
+            placeholder="Capacity (e.g., 08 seater)"
             onChange={handleChange}
             required
           />
           <input
             type="text"
-            name="ratingText"
-            value={formData.ratingText}
-            placeholder="Rating Text"
+            name="date"
+            value={formData.date}
+            placeholder="Date (e.g., 09-04-2025)"
             onChange={handleChange}
+            required
           />
           <input
             type="text"
-            name="reviewCount"
-            value={formData.reviewCount}
-            placeholder="Review Count"
+            name="time"
+            value={formData.time}
+            placeholder="Time (e.g., 1330 H)"
             onChange={handleChange}
+            required
           />
           <input
             type="text"
-            name="price"
-            value={formData.price}
-            placeholder="Price in PLN"
+            name="quote"
+            value={formData.quote}
+            placeholder="Quote (e.g., 50,000/- per seat)"
             onChange={handleChange}
             required
           />
@@ -163,14 +164,14 @@ export default function AparthotelForm() {
         <h2>All Deals</h2>
         {deals.map((deal) => (
           <div className="deal-card" key={deal.id}>
-            <img src={deal.imageUrl} alt={deal.name} />
+            <img src={deal.imageUrl} alt={deal.from} />
             <div>
-              <h4>{deal.name}</h4>
-              <p>{deal.location}</p>
-              <p>
-                <strong>{deal.rating}</strong> {deal.ratingText} ({deal.reviewCount})
-              </p>
-              <p>{deal.price} PLN</p>
+              <h4>{deal.from}</h4>
+              <p>Aircraft: {deal.aircraft}</p>
+              <p>Capacity: {deal.capacity}</p>
+              <p>Date: {deal.date}</p>
+              <p>Time: {deal.time}</p>
+              <p>Quote: {deal.quote}</p>
               <div className="action-buttons">
                 <button onClick={() => handleEdit(deal)}>Edit</button>
                 <button onClick={() => handleDelete(deal.id)}>Delete</button>
