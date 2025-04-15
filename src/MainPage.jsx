@@ -13,7 +13,9 @@ const cardData = [
   { title: "Yatch Manager", route: "/YatchManager" },
   // { title: "Customer Review Helicopter", route: "/logout" },
   { title: "Helicopter Enquiry", route: "/HelicopterEnquiry" },
+  { title: "Client Enquiry", route: "/ClientEnquiry" },
   { title: "Sign Up", route: "/SignUp" },
+ 
 ];
 
 const MainPage = () => {
