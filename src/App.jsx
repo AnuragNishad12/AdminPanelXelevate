@@ -16,6 +16,7 @@ import LuxuryJetForm from './Blogs/LuxuryJetForm';
 import BookingsDisplay from './BookingsDisplay/BookingsDisplay';
 import YachtManager from './YachtManager/YachtManager';
 import TripList from './Enquiry/TripList';
+import SubscribersPage from './SubscribersPage/SubscribersPage';
 
 function App() {
   const [count, setCount] = useState(0);
@@ -38,6 +39,7 @@ function App() {
           <Route path="/YatchManager" element={<YachtManager />} />
           <Route path="/HelicopterEnquiry" element={<BookingsDisplay />} />
           <Route path="/ClientEnquiry" element={<TripList />} />
+          <Route path="/Subscribers" element={<SubscribersPage />} />
         </Routes>
       </Router>
     </>

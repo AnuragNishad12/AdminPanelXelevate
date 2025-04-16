@@ -13,7 +13,13 @@
   justify-content: center;
 } */
 
+.yacht-container input{
+  color: #000 !important;
+}
 
+.yacht-container textarea{
+  color: #000 !important;
+}
 
 
 .yacht-container {

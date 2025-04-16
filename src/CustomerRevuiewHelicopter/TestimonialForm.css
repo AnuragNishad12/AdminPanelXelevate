@@ -6,6 +6,16 @@
     margin: 0 auto;
     padding: 2rem;
   }
+
+  .testimonial-container input{
+    color: #000 !important;
+  }
+  
+  .testimonial-container textarea{
+    color: #000 !important;
+  }
+
+
   
   .testimonial-form-container,
   .testimonial-list-container {

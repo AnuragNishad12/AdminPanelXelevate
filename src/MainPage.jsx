@@ -13,6 +13,7 @@ const cardData = [
   // { title: "Helicopter Enquiry", route: "/HelicopterEnquiry" },
   { title: "Client Enquiry", route: "/ClientEnquiry" },
   { title: "Customer Review", route: "/CustomerReview" },
+  { title: "Subscribers", route: "/Subscribers" },
   { title: "Blogs", route: "/Blogs" },
   { title: "Sign Up", route: "/SignUp" },
  

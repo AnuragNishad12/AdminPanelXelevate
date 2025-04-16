@@ -9,6 +9,14 @@
   background-color: #161617;
 }
 
+.management-container input{
+  color: #000 !important;
+}
+
+.management-container textarea{
+  color: #000 !important;
+}
+
 /* Form Section - Left Side */
 .form-section {
   flex: 1;

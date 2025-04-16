@@ -25,6 +25,16 @@
   flex: 0 0 60%; /* Takes 60% of container width */
 }
 
+
+
+.car-management-container input{
+  color: #000 !important;
+}
+
+.car-management-container textarea{
+  color: #000 !important;
+}
+
 .form-title {
   color: white;
   font-size: 24px;

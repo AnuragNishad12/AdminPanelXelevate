@@ -5,6 +5,16 @@
 width: 100%;
 height: 100vh;
 }
+
+.enquiry_Container input{
+  color: #000 !important;
+}
+
+.enquiry_Container textarea{
+  color: #000 !important;
+}
+
+
 .trip-list-container {
     max-width: 1200px;
     margin: 0 auto;

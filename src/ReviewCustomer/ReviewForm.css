@@ -13,6 +13,16 @@
   --transition: all 0.3s ease;
 }
 
+
+.review-container input{
+  color: #000 !important;
+}
+
+.review-container textarea{
+  color: #000 !important;
+}
+
+
 .review-container {
   max-width: 1200px;
   margin: 0 auto;

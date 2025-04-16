@@ -171,8 +171,15 @@
     border-radius: 2px;
   }
   
+  .input[type="text"] {
+    background-color: #007bff;
+    color: rgb(0, 0, 0);
+  }
+
+
   .input-group {
     margin-bottom: 15px;
+    background-color: #000000;
   }
   
   .input-group label {
@@ -254,6 +261,14 @@
     background-color: #2980b9;
   }
   
+  .aircraft-management input {
+    color: #000 !important;
+  }
+
+.aircraft-management textarea{
+    color: #000 !important;
+}
+
   .save-button.submitting {
     background-color: #95a5a6;
     cursor: not-allowed;

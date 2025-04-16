@@ -9,6 +9,15 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+.dashboard-container input{
+    color: #000 !important;
+}
+
+.dashboard-container textarea{
+    color: #000 !important;
+}
+
+
 .form-section, .list-section {
     background-color: #1e1e1f;
     padding: 30px;

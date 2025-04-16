@@ -7,6 +7,17 @@
   height: 100vh;
 }
 
+
+
+
+.bookings-container input {
+  color: #000 !important;
+}
+
+.bookings-container textarea{
+  color: #000 !important;
+}
+
 .bookings-header {
   display: flex;
   justify-content: space-between;
