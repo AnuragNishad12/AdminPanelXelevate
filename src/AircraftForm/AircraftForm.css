@@ -1,720 +1,540 @@
-/* AircraftManagement.css */
+/* AircraftForm.css */
+:root {
+  --primary-color: #161617;
+  --secondary-color: #222224;
+  --accent-color: #4a80f0;
+  --text-color: #f5f5f7;
+  --text-secondary: #a0a0a5;
+  --border-color: #303035;
+  --error-color: #ff5050;
+  --success-color: #50c878;
+  --hover-color: #282830;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
 
-/* Reset and base styles */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #161617;
-    color: #333;
-    line-height: 1.6;
-  }
-  
-  /* label{
-    color: #000000;
-  } */
-  /* Main container styles */
-  .aircraft-management {
-    width: 100%;
-    padding: 20px;
-  }
-  
-  .main-title {
-    text-align: center;
-    margin-bottom: 25px;
-    color: #2c3e50;
-    font-size: 32px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    position: relative;
-    padding-bottom: 15px;
-  }
-  
-  .main-title:after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100px;
-    height: 4px;
-    background: linear-gradient(to right, #3498db, #2c3e50);
-    border-radius: 2px;
-  }
-  
-  .container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 30px;
-    max-width: 1800px;
-    margin: 0 auto;
-  }
-  
-  /* Alert styles */
-  .alert {
-    padding: 12px 20px;
-    margin-bottom: 20px;
-    border-radius: 6px;
-    font-weight: 500;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    animation: fadeIn 0.3s ease-in-out;
-  }
-  
-  .alert.success {
-    background-color: #d4edda;
-    color: #155724;
-    border-left: 4px solid #28a745;
-  }
-  
-  .alert.error {
-    background-color: #f8d7da;
-    color: #721c24;
-    border-left: 4px solid #dc3545;
-  }
-  
-  .alert-content {
-    display: flex;
-    align-items: center;
-  }
-  
-  .alert-icon {
-    margin-right: 12px;
-    font-size: 18px;
-    width: 24px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-  }
-  
-  .success .alert-icon {
-    background-color: #28a745;
-    color: white;
-  }
-  
-  .error .alert-icon {
-    background-color: #dc3545;
-    color: white;
-  }
-  
-  .alert-message {
-    font-size: 15px;
-  }
-  
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  
-  /* Form section styles */
-  .form-section {
-    flex: 1;
-    min-width: 300px;
-    max-width: 800px;
-    background-color: #000000;
-  }
-  .page-title{
-    color: white;
-  }
-
-  .form-container {
-    background-color: #000000;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    padding: 30px;
-    position: relative;
-  }
-  
-  .section-title {
-    font-size: 24px;
-    margin-bottom: 25px;
-    color: #ffffff;
-    border-bottom: 2px solid #eaeaea;
-    padding-bottom: 10px;
-    font-weight: 600;
-  }
-  
-  .form-group {
-    margin-bottom: 30px;
-    padding: 20px;
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-  }
-
-  /* .form-group label{
-    color: rgb(255, 0, 0);
-  } */
-  
-  .group-title {
-    font-size: 18px;
-    margin-bottom: 20px;
-    color: #2c3e50;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-  }
-  
-  .group-title::before {
-    content: '';
-    display: inline-block;
-    width: 8px;
-    height: 18px;
-    background-color: #3498db;
-    margin-right: 10px;
-    border-radius: 2px;
-  }
-  
-  .input[type="text"] {
-    background-color: #007bff;
-    color: rgb(0, 0, 0);
-  }
-
-
-  .input-group {
-    margin-bottom: 15px;
-    background-color: #000000;
-  }
-  
-  .input-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 500;
-    color: #000000;
-    font-size: 14px;
-  }
-  
-  .input-group input,
-  .input-group textarea,
-  .input-group select {
-    width: 100%;
-    padding: 12px 15px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    font-size: 15px;
-    color: #333;
-    font-family: inherit;
-    transition: border 0.2s, box-shadow 0.2s;
-  }
-  
-  .input-group input:focus,
-  .input-group textarea:focus,
-  .input-group select:focus {
-    outline: none;
-    border-color: #3498db;
-    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
-  }
-  
-  .input-group textarea {
-    resize: vertical;
-    min-height: 100px;
-  }
-  
-  /* Technical specifications layout */
-  .spec-section {
-    margin-bottom: 20px;
-  }
-  
-  .spec-title {
-    font-size: 16px;
-    margin-bottom: 15px;
-    color: #3498db;
-    font-weight: 500;
-  }
-  
-  .spec-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 15px;
-  }
-  
-  /* Button styles */
-  .button-group {
-    display: flex;
-    justify-content: flex-end;
-    gap: 15px;
-    margin-top: 30px;
-  }
-  
-  .save-button, .reset-button {
-    padding: 12px 24px;
-    border: none;
-    border-radius: 6px;
-    font-weight: 600;
-    cursor: pointer;
-    font-size: 15px;
-    transition: all 0.2s;
-  }
-  
-  .save-button {
-    background-color: #3498db;
-    color: white;
-  }
-  
-  .save-button:hover {
-    background-color: #2980b9;
-  }
-  
-  .aircraft-management input {
-    color: #000 !important;
-  }
-
-.aircraft-management textarea{
-    color: #000 !important;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-  .save-button.submitting {
-    background-color: #95a5a6;
-    cursor: not-allowed;
-  }
-  
-  .reset-button {
-    background-color: #ecf0f1;
-    color: #7f8c8d;
-  }
-  
-  .reset-button:hover {
-    background-color: #dfe6e9;
-    color: #636e72;
-  }
-  
-  .loading-text {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .loading-spinner {
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    border-radius: 50%;
-    border-top-color: white;
-    animation: spin 1s linear infinite;
-    margin-right: 8px;
-  }
-  
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-  
-  /* List section styles */
-  .list-section {
-    flex: 1;
-    min-width: 300px;
-    max-width: 700px;
-  }
-  
-  .aircraft-list {
-    list-style: none;
-    margin-top: 20px;
-  }
-  
-  .aircraft-item {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-    margin-bottom: 20px;
-    overflow: hidden;
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
-  
-  .aircraft-item:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  }
-  
-  .aircraft-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 20px;
-    background-color: #3498db;
-    color: white;
-  }
-  
-  .aircraft-name {
-    font-size: 18px;
-    margin: 0;
-    font-weight: 600;
-  }
-  
-  .aircraft-type {
-    background-color: rgba(255, 255, 255, 0.2);
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 600;
-  }
-  
-  .aircraft-info {
-    padding: 20px;
-  }
-  
-  .info-row {
-    margin-bottom: 10px;
-    font-size: 14px;
-  }
-  
-  .info-row strong {
-    display: inline-block;
-    width: 100px;
-    color: #555;
-  }
-  
-  .description {
-    margin-top: 15px;
-    padding-top: 15px;
-    border-top: 1px solid #eee;
-    color: #666;
-    font-style: italic;
-  }
-  
-  .aircraft-actions {
-    display: flex;
-    padding: 0 20px 20px;
-    gap: 10px;
-  }
-  
-  .edit-button, .delete-button {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: 500;
-    font-size: 14px;
-    transition: background-color 0.2s;
-  }
-  
-  .edit-button {
-    background-color: #f39c12;
-    color: white;
-  }
-  
-  .edit-button:hover {
-    background-color: #e67e22;
-  }
-  
-  .delete-button {
-    background-color: #e74c3c;
-    color: white;
-  }
-  
-  .delete-button:hover {
-    background-color: #c0392b;
-  }
-  
-  .no-data {
-    text-align: center;
-    padding: 30px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-    color: #7f8c8d;
-    font-style: italic;
-  }
-  
-  /* Responsive adjustments */
-  @media (max-width: 1200px) {
-    .container {
-      flex-direction: column;
-    }
-    
-    .form-section, .list-section {
-      max-width: 100%;
-    }
-  }
-  
-  @media (max-width: 600px) {
-    .spec-grid {
-      grid-template-columns: 1fr;
-    }
-    
-    .button-group {
-      flex-direction: column;
-    }
-    
-    .button-group button {
-      width: 100%;
-    }
-    
-    .aircraft-header {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-    
-    .aircraft-type {
-      margin-top: 5px;
-    }
-  }
+body, html {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  line-height: 1.6;
+}
 
-  /* Container styling */
+.aircraft-management {
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.container {
+  display: flex;
+  gap: 30px;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+/* Form Container */
+.form-container {
+  flex: 1;
+  max-width: 650px;
+}
+
+.form-wrapper {
+  background-color: var(--secondary-color);
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: var(--shadow);
+  margin-bottom: 30px;
+}
+
+.page-title {
+  font-size: 28px;
+  margin-bottom: 30px;
+  font-weight: 700;
+  color: var(--text-color);
+  border-bottom: 2px solid var(--accent-color);
+  padding-bottom: 10px;
+}
+
+.form-section {
+  margin-bottom: 30px;
+}
+
+.section-title {
+  font-size: 20px;
+  margin-bottom: 20px;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.subsection {
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+}
+
+.subsection-title {
+  font-size: 16px;
+  margin-bottom: 15px;
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+input, textarea, select {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.05);
+  color: var(--text-color);
+  font-size: 15px;
+  transition: all 0.3s ease;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px rgba(74, 128, 240, 0.2);
+}
+
+textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.help-text {
+  display: block;
+  margin-top: 5px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+/* File Upload */
+.file-upload-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 10px;
+}
+
+.file-select-btn {
+  white-space: nowrap;
+}
+
+.selected-file-info {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+/* Image Preview */
+.image-previews {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.image-preview-item {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  aspect-ratio: 1;
+}
+
+.image-preview-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.remove-image-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: rgba(0, 0, 0, 0.7);
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: white;
+  transition: all 0.2s;
+}
+
+.remove-image-btn:hover {
+  background-color: var(--error-color);
+}
+
+/* Progress Bar */
+.upload-progress {
+  margin-top: 15px;
+}
+
+.progress-bar {
+  height: 6px;
+  background-color: var(--border-color);
+  border-radius: 3px;
+  margin-bottom: 5px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background-color: var(--accent-color);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.progress-text {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+/* Buttons */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.btn {
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background-color: var(--accent-color);
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: #3a70e0;
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: var(--hover-color);
+}
+
+.btn-icon {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.btn-edit:hover {
+  color: var(--accent-color);
+  background-color: rgba(74, 128, 240, 0.1);
+}
+
+.btn-delete:hover {
+  color: var(--error-color);
+  background-color: rgba(255, 80, 80, 0.1);
+}
+
+/* Loading Spinner */
+.loading-spinner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+  width: 18px;
+  height: 18px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* List Container */
 .list-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  }
-  
-  /* Section title */
-  .section-title {
-    color: #ffffff;
-    font-size: 2rem;
-    margin-bottom: 1.5rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 2px solid #3498db;
-  }
-  
-  /* Empty state styling */
-  .empty-state {
-    padding: 3rem;
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    text-align: center;
-    color: #6c757d;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-  }
-  
-  .empty-state p {
-    font-size: 1.1rem;
-  }
-  
-  /* Aircraft list grid layout */
-  .aircraft-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    gap: 20px;
-  }
-  
-.image-preview-item img{
-  height: 70px;
-  width: 100px;
+  flex: 1;
+  max-width: 600px;
 }
 
-  .aircraft-card.edit-mode .aircraft-image img {
-    max-width: 100px;
-    max-height: 75px;
-    object-fit: cover;
+.aircraft-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+.aircraft-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.aircraft-list::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+}
+
+.aircraft-list::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 3px;
+}
+
+.aircraft-list::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+.aircraft-card {
+  background-color: var(--secondary-color);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: transform 0.3s ease;
+}
+
+.aircraft-card:hover {
+  transform: translateY(-4px);
+}
+
+.aircraft-card-header {
+  padding: 15px 20px;
+  background-color: rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.aircraft-card-header h3 {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.card-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.aircraft-card-content {
+  padding: 20px;
+  display: flex;
+  gap: 20px;
+}
+
+.aircraft-info {
+  flex: 1;
+}
+
+.aircraft-info p {
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.aircraft-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.aircraft-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.empty-state {
+  padding: 50px 20px;
+  text-align: center;
+  background-color: var(--secondary-color);
+  border-radius: 12px;
+  color: var(--text-secondary);
+}
+
+/* Alert Dialog */
+.alert {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  padding: 15px 20px;
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  animation: slideIn 0.3s ease;
+  max-width: 400px;
+}
+
+.alert-success {
+  background-color: rgba(80, 200, 120, 0.15);
+  border-left: 4px solid var(--success-color);
+}
+
+.alert-error {
+  background-color: rgba(255, 80, 80, 0.15);
+  border-left: 4px solid var(--error-color);
+}
+
+.alert-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.alert-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
   }
-  /* Aircraft card styling */
-  .aircraft-card {
-    border-radius: 10px;
-    overflow: hidden;
-    background-color: white;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s, box-shadow 0.2s;
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .container {
+    flex-direction: column;
   }
   
-  .aircraft-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  .form-container, .list-container {
+    max-width: 100%;
   }
   
-  /* Card header with title and action buttons */
-  .aircraft-card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 20px;
-    background-color: #002850;
-    border-bottom: 1px solid #e9ecef;
+  .aircraft-list {
+    max-height: none;
+    overflow-y: visible;
   }
-  
-  .aircraft-card-header h3 {
-    margin: 0;
-    font-size: 1.25rem;
-    color: #ffffff;
-    font-weight: 600;
-  }
-  
-  /* Card content layout */
+}
+
+@media (max-width: 768px) {
   .aircraft-card-content {
-    display: flex;
-    padding: 20px;
-    background-color: #000000;
+    flex-direction: column;
   }
   
-  .aircraft-info {
-    flex: 1;
-    
-  }
-  
-  .aircraft-info p {
-    margin: 8px 0;
-    color: #ffffff;
-  }
-  
-  .aircraft-info p strong {
-    color: #2c3e50;
-    font-weight: 600;
-  }
-  
-  /* Aircraft image styling */
   .aircraft-image {
-    width: 120px;
-    height: 120px;
-    margin-left: 15px;
-    border-radius: 6px;
-    overflow: hidden;
-  }
-  
-  .aircraft-image img {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: 150px;
   }
   
-  /* Button styling */
-  .card-actions {
-    display: flex;
-    gap: 8px;
-   
+  .form-row {
+    grid-template-columns: 1fr;
   }
   
-  /* .btn-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
-    transition: background-color 0.2s;
-  } */
-  
-  .btn-edit {
-    color: #2c3e50;
+  .form-actions {
+    flex-direction: column;
   }
   
-  .btn-delete {
-    color: #e74c3c;
-  }
-  
-  /* .btn-icon:hover {
-    background-color: rgba(0, 0, 0, 0.1);
-  } */
-  
-  /* Responsive adjustments */
-  @media (max-width: 768px) {
-    .aircraft-list {
-      grid-template-columns: 1fr;
-    }
-    
-    .aircraft-card-content {
-      flex-direction: column;
-    }
-    
-    .aircraft-image {
-      width: 100%;
-      height: 180px;
-      margin-left: 0;
-      margin-top: 15px;
-    }
-  }
-
-  .button-group {
-    display: flex;
-    gap: 10px;
-  }
-  
-  .btn-icon {
-    border: none;
-    background-color: #f0f0f0;
-    padding: 10px;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .btn-icon svg {
-    transition: transform 0.2s ease;
-  }
-  
-  .btn-icon:hover svg {
-    transform: scale(1.1);
-  }
-  
-  /* Edit Button Styles */
-  .edit-btn {
-    color: #007bff;
-    background-color: #e7f1ff;
-  }
-  
-  .edit-btn:hover {
-    background-color: #d0e7ff;
-    color: #0056b3;
-  }
-  
-  /* Delete Button Styles */
-  .delete-btn {
-    color: #dc3545;
-    background-color: #ffe7e7;
-  }
-  
-  .delete-btn:hover {
-    background-color: #ffcccc;
-    color: #b02a37;
-  }
-  
-  .file-input {
+  .btn {
     width: 100%;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background-color: #f9f9f9;
   }
-  
-  .help-text {
-    display: block;
-    margin-top: 4px;
-    color: #666;
-    font-size: 0.85rem;
-  }
+}
 
-  .aircraft-management {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #333;
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 20px;
+@media (max-width: 480px) {
+  .form-wrapper, .aircraft-card {
+    padding: 15px;
   }
   
-  /* Alert styling */
-  .alert {
-    padding: 12px 16px;
-    margin-bottom: 20px;
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 1000;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    animation: fadeIn 0.3s;
+  .page-title {
+    font-size: 24px;
   }
   
-  .alert-success {
-    background-color: #d4edda;
-    color: #155724;
-    border: 1px solid #c3e6cb;
+  .section-title {
+    font-size: 18px;
   }
-  
-  .alert-error {
-    background-color: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
-  }
+}
+
+.btn-icon {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  width: 30px;  /* Increase size */
+  height: 30px; /* Increase size */
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.btn-icon {
+  background-color: rgba(74, 128, 240, 0.2); /* Add visible background */
+  color: white; /* Make icon color white for better visibility */
+}
+
+.btn-delete {
+  background-color: rgba(255, 80, 80, 0.2); /* Add visible background */
+  color: white; /* Make icon color white for better visibility */
+}
+
+/* Make SVG icons larger and more visible */
+.btn-icon svg {
+  width: 18px;
+  height: 18px;
+}
