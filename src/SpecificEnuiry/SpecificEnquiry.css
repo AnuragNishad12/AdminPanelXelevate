@@ -1,0 +1,67 @@
+/* SpecificEnquiry.css */
+
+.app {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8f9fa;
+  padding: 2rem;
+  min-height: 100vh;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.header h1 {
+  font-size: 2.5rem;
+  color: #343a40;
+  border-bottom: 2px solid #6c63ff;
+  display: inline-block;
+  padding-bottom: 0.5rem;
+}
+
+.loader,
+.error,
+.no-data {
+  text-align: center;
+  font-size: 1.2rem;
+  margin-top: 3rem;
+  color: #6c757d;
+}
+
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease-in-out;
+  padding: 1.5rem;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #6c63ff;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 0.5rem;
+}
+
+.card-body p {
+  margin: 0.5rem 0;
+  font-size: 1rem;
+  color: #495057;
+}
+
+.card-body strong {
+  color: #212529;
+}

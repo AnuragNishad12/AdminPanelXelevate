@@ -15,7 +15,9 @@ const cardData = [
   { title: "Customer Review", route: "/CustomerReview" },
   { title: "Subscribers", route: "/Subscribers" },
   { title: "Blogs", route: "/Blogs" },
+  {title:"Specific Enquiry",route:"/SpecificEnquiry"},
   { title: "Sign Up", route: "/SignUp" },
+  
  
 ];
 

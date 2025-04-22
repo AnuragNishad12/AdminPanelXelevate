@@ -17,6 +17,7 @@ import BookingsDisplay from './BookingsDisplay/BookingsDisplay';
 import YachtManager from './YachtManager/YachtManager';
 import TripList from './Enquiry/TripList';
 import SubscribersPage from './SubscribersPage/SubscribersPage';
+import SpecificEnquiry from './SpecificEnuiry/SpecificEnquiry';
 
 function App() {
   const [count, setCount] = useState(0);
@@ -40,6 +41,7 @@ function App() {
           <Route path="/HelicopterEnquiry" element={<BookingsDisplay />} />
           <Route path="/ClientEnquiry" element={<TripList />} />
           <Route path="/Subscribers" element={<SubscribersPage />} />
+          <Route path="/SpecificEnquiry" element={<SpecificEnquiry/>}/>
         </Routes>
       </Router>
     </>
