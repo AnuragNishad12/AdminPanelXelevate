@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { database } from "../firebaseConfig";
-import { ref, onValue } from "firebase/database";
-import "../SpecificEnuiry/SpecificEnquiry.css";
+import { ref, onValue, remove } from "firebase/database";
 
 function SpecificEnquiry() {
   const [travelData, setTravelData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [deleteStatus, setDeleteStatus] = useState({ id: null, status: null });
 
   useEffect(() => {
     const travelRef = ref(database, "aircraftEnquiries");
@@ -37,43 +37,102 @@ function SpecificEnquiry() {
     );
   }, []);
 
+  const handleDelete = async (id) => {
+    try {
+      setDeleteStatus({ id, status: "deleting" });
+      const entryRef = ref(database, `aircraftEnquiries/${id}`);
+      await remove(entryRef);
+      setDeleteStatus({ id, status: "success" });
+      setTimeout(() => {
+        setDeleteStatus({ id: null, status: null });
+      }, 2000);
+    } catch (err) {
+      console.error("Error deleting entry:", err);
+      setDeleteStatus({ id, status: "error" });
+      setTimeout(() => {
+        setDeleteStatus({ id: null, status: null });
+      }, 2000);
+    }
+  };
+
   return (
-    <div className="app">
-      <header className="header">
-        <h1>Travel Details Dashboard</h1>
+    <div className="min-h-screen bg-[#161617] text-white">
+      {/* Container for the entire dashboard */}
+      <header className="p-6 border-b border-gray-700">
+        <h1 className="text-3xl font-bold text-center">Travel Details Dashboard</h1>
       </header>
-      <main className="main">
+      <main className="p-6">
         {loading ? (
-          <div className="loader">Loading...</div>
+          <div className="flex justify-center items-center h-64">
+            <p className="text-lg animate-pulse">Loading...</p>
+          </div>
         ) : error ? (
-          <div className="error">{error}</div>
+          <div className="flex justify-center items-center h-64 text-red-400">
+            <p>{error}</p>
+          </div>
         ) : travelData.length === 0 ? (
-          <div className="no-data">No travel details available.</div>
+          <div className="flex justify-center items-center h-64">
+            <p className="text-lg">No travel details available.</p>
+          </div>
         ) : (
-          <div className="card-container">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {travelData.map((item) => (
-              <div className="card" key={item.id}>
-                <div className="card-header">
-                  <h2>{item.fullName}</h2>
+              <div
+                key={item.id}
+                className="bg-gray-800 rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow duration-300"
+              >
+                <div className="mb-4">
+                  <h2 className="text-xl font-semibold text-gray-100">{item.fullName}</h2>
                 </div>
-                <div className="card-body">
-                  <p>
-                    <strong>Message:</strong> {item.message}
+                <div className="space-y-3">
+                  <p className="text-sm">
+                    <span className="font-medium text-gray-400">Message: </span>
+                    <span className="text-gray-200">{item.message}</span>
                   </p>
-                  <p>
-                    <strong>Phone:</strong> {item.phoneNumber}
+                  <p className="text-sm">
+                    <span className="font-medium text-gray-400">Phone: </span>
+                    <span className="text-gray-200">{item.phoneNumber}</span>
                   </p>
-                  <p>
-                    <strong>Transport:</strong>{" "}
-                    {item.preferredTransport || "Not specified"}
+                  <p className="text-sm">
+                    <span className="font-medium text-gray-400">Transport: </span>
+                    <span className="text-gray-200">
+                      {item.preferredTransport || "Not specified"}
+                    </span>
                   </p>
-                  <p>
-                    <strong>Travel Date:</strong> {item.travelDate}
+                  <p className="text-sm">
+                    <span className="font-medium text-gray-400">Travel Date: </span>
+                    <span className="text-gray-200">{item.travelDate}</span>
                   </p>
-                  <p>
-                    <strong>Timestamp:</strong>{" "}
-                    {new Date(item.timestamp).toLocaleString()}
+                  <p className="text-sm">
+                    <span className="font-medium text-gray-400">Timestamp: </span>
+                    <span className="text-gray-200">
+                      {new Date(item.timestamp).toLocaleString()}
+                    </span>
                   </p>
+                  <div className="mt-4">
+                    <button
+                      className={`w-full py-2 px-4 rounded-md text-red-500 font-medium transition-colors duration-200 
+                        ${
+                          deleteStatus.id === item.id && deleteStatus.status === "deleting"
+                            ? "bg-gray-500 cursor-not-allowed"
+                            : deleteStatus.id === item.id && deleteStatus.status === "success"
+                            ? "bg-green-600"
+                            : deleteStatus.id === item.id && deleteStatus.status === "error"
+                            ? "bg-red-600"
+                            : "bg-red-500 hover:bg-red-600"
+                        }`}
+                      onClick={() => handleDelete(item.id)}
+                      disabled={deleteStatus.id === item.id && deleteStatus.status === "deleting"}
+                    >
+                      {deleteStatus.id === item.id && deleteStatus.status === "deleting"
+                        ? "Deleting..."
+                        : deleteStatus.id === item.id && deleteStatus.status === "success"
+                        ? "Deleted!"
+                        : deleteStatus.id === item.id && deleteStatus.status === "error"
+                        ? "Failed!"
+                        : "Delete"}
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}
