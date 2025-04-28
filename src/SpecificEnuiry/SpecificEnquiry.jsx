@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import { database } from "../firebaseConfig";
 import { ref, onValue, remove } from "firebase/database";
 
-function SpecificEnquiry() {
+function EnquiryDetailsForTravels() {
   const [travelData, setTravelData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [deleteStatus, setDeleteStatus] = useState({ id: null, status: null });
 
   useEffect(() => {
-    const travelRef = ref(database, "aircraftEnquiries");
+    const travelRef = ref(database, "EnquiryDetailsForTravels");
     onValue(
       travelRef,
       (snapshot) => {
@@ -40,7 +40,7 @@ function SpecificEnquiry() {
   const handleDelete = async (id) => {
     try {
       setDeleteStatus({ id, status: "deleting" });
-      const entryRef = ref(database, `aircraftEnquiries/${id}`);
+      const entryRef = ref(database, `EnquiryDetailsForTravels/${id}`);
       await remove(entryRef);
       setDeleteStatus({ id, status: "success" });
       setTimeout(() => {
@@ -56,10 +56,9 @@ function SpecificEnquiry() {
   };
 
   return (
-    <div className="min-h-screen bg-[#161617] text-white">
-      {/* Container for the entire dashboard */}
+    <div className="min-h-screen bg-gray-900 text-white">
       <header className="p-6 border-b border-gray-700">
-        <h1 className="text-3xl font-bold text-center">Travel Details Dashboard</h1>
+        <h1 className="text-3xl font-bold text-center">Travel Enquiries Dashboard</h1>
       </header>
       <main className="p-6">
         {loading ? (
@@ -72,7 +71,7 @@ function SpecificEnquiry() {
           </div>
         ) : travelData.length === 0 ? (
           <div className="flex justify-center items-center h-64">
-            <p className="text-lg">No travel details available.</p>
+            <p className="text-lg">No travel enquiries available.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -83,6 +82,7 @@ function SpecificEnquiry() {
               >
                 <div className="mb-4">
                   <h2 className="text-xl font-semibold text-gray-100">{item.fullName}</h2>
+                  <p className="text-sm text-gray-400">{item.email}</p>
                 </div>
                 <div className="space-y-3">
                   <p className="text-sm">
@@ -90,18 +90,20 @@ function SpecificEnquiry() {
                     <span className="text-gray-200">{item.message}</span>
                   </p>
                   <p className="text-sm">
-                    <span className="font-medium text-gray-400">Phone: </span>
-                    <span className="text-gray-200">{item.phoneNumber}</span>
+                    <span className="font-medium text-gray-400">Contact: </span>
+                    <span className="text-gray-200">{item.number}</span>
                   </p>
                   <p className="text-sm">
-                    <span className="font-medium text-gray-400">Transport: </span>
-                    <span className="text-gray-200">
-                      {item.preferredTransport || "Not specified"}
-                    </span>
+                    <span className="font-medium text-gray-400">Service: </span>
+                    <span className="text-gray-200">{item.serviceName || "Not specified"}</span>
                   </p>
                   <p className="text-sm">
-                    <span className="font-medium text-gray-400">Travel Date: </span>
-                    <span className="text-gray-200">{item.travelDate}</span>
+                    <span className="font-medium text-gray-400">Starting Price: </span>
+                    <span className="text-gray-200">{item.startingPrice || "Not specified"}</span>
+                  </p>
+                  <p className="text-sm">
+                    <span className="font-medium text-gray-400">Date: </span>
+                    <span className="text-gray-200">{item.date}</span>
                   </p>
                   <p className="text-sm">
                     <span className="font-medium text-gray-400">Timestamp: </span>
@@ -110,28 +112,28 @@ function SpecificEnquiry() {
                     </span>
                   </p>
                   <div className="mt-4">
-                    <button
-                      className={`w-full py-2 px-4 rounded-md text-red-500 font-medium transition-colors duration-200 
-                        ${
-                          deleteStatus.id === item.id && deleteStatus.status === "deleting"
-                            ? "bg-gray-500 cursor-not-allowed"
-                            : deleteStatus.id === item.id && deleteStatus.status === "success"
-                            ? "bg-green-600"
-                            : deleteStatus.id === item.id && deleteStatus.status === "error"
-                            ? "bg-red-600"
-                            : "bg-red-500 hover:bg-red-600"
-                        }`}
-                      onClick={() => handleDelete(item.id)}
-                      disabled={deleteStatus.id === item.id && deleteStatus.status === "deleting"}
-                    >
-                      {deleteStatus.id === item.id && deleteStatus.status === "deleting"
-                        ? "Deleting..."
-                        : deleteStatus.id === item.id && deleteStatus.status === "success"
-                        ? "Deleted!"
-                        : deleteStatus.id === item.id && deleteStatus.status === "error"
-                        ? "Failed!"
-                        : "Delete"}
-                    </button>
+                  <button
+  className={`w-full py-2 px-4 rounded-md font-medium transition-colors duration-200 
+    ${
+      deleteStatus.id === item.id && deleteStatus.status === "deleting"
+        ? "bg-gray-600 text-red-500 cursor-not-allowed"
+        : deleteStatus.id === item.id && deleteStatus.status === "success"
+        ? "bg-green-600 text-red-500"
+        : deleteStatus.id === item.id && deleteStatus.status === "error"
+        ? "bg-red-600 text-red-500"
+        : "bg-red-500 hover:bg-red-600 text-red-500"
+    }`}
+  onClick={() => handleDelete(item.id)}
+  disabled={deleteStatus.id === item.id && deleteStatus.status === "deleting"}
+>
+  {deleteStatus.id === item.id && deleteStatus.status === "deleting"
+    ? "Deleting..."
+    : deleteStatus.id === item.id && deleteStatus.status === "success"
+    ? "Deleted!"
+    : deleteStatus.id === item.id && deleteStatus.status === "error"
+    ? "Failed!"
+    : "Delete"}
+</button>
                   </div>
                 </div>
               </div>
@@ -143,4 +145,4 @@ function SpecificEnquiry() {
   );
 }
 
-export default SpecificEnquiry;
+export default EnquiryDetailsForTravels;
