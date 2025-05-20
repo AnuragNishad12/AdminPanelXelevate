@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { database, storage, ref as dbRef, set, push } from '../firebaseConfig';
 import { ref as storageRef, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { onValue, remove, update } from 'firebase/database';
-import '../YachtManager/YachtManagementSystem.css'
 
 function YachtManagementSystem() {
   // State for form data
@@ -204,8 +203,10 @@ function YachtManagementSystem() {
       }
     });
 
-    // Scroll to form
-    document.getElementById('yachtForm').scrollIntoView({ behavior: 'smooth' });
+    // Scroll to form on mobile
+    if (window.innerWidth < 768) {
+      document.getElementById('yachtForm').scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   const handleDelete = async (yacht) => {
@@ -275,222 +276,248 @@ function YachtManagementSystem() {
   };
 
   return (
-    <div className="yacht-container">
-      {/* Form Section */}
-      <div className="form-section">
-        <h2>{editingId ? 'Edit Yacht' : 'Add New Yacht'}</h2>
+   <div className=" flex flex-col md:flex-row bg-[#161617] text-gray-200 min-h-screen">
+
+      {/* Form Section - Left Side */}
+      <div className="w-full md:w-2/5 p-6 overflow-y-auto border-r border-gray-800 ">
+        <h2 className="text-2xl font-bold mb-6 text-white uppercase tracking-wider">
+          {editingId ? 'Edit Yacht' : 'Add New Yacht'}
+        </h2>
         
-        <form id="yachtForm" onSubmit={handleSubmit} className="space-y">
+        <form id="yachtForm" onSubmit={handleSubmit} className="space-y-8">
           {/* Basic Information */}
-          <div className="space-y">
-            <h3 className="form-section-title">Basic Information</h3>
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-white border-b border-gray-700 pb-2 uppercase">
+              Basic Information
+            </h3>
             
-            <div className="form-group">
-              <label>Name</label>
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-300">Name</label>
               <input
                 type="text"
                 name="name"
                 value={formData.name}
                 onChange={handleInputChange}
                 required
+                className="w-full px-3 py-2 bg-transparent border border-gray-700 rounded-md text-white focus:outline-none focus:ring-1 focus:ring-white"
               />
             </div>
             
-            <div className="form-group">
-              <label>Price (per week)</label>
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-300">Price (per week)</label>
               <input
                 type="text"
                 name="price"
                 value={formData.price}
                 onChange={handleInputChange}
                 required
+                className="w-full px-3 py-2 bg-transparent border border-gray-700 rounded-md text-white focus:outline-none focus:ring-1 focus:ring-white"
               />
             </div>
             
-            <div className="form-group">
-              <label>Route</label>
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-300">Route</label>
               <input
                 type="text"
                 name="route"
                 value={formData.route}
                 onChange={handleInputChange}
                 required
+                className="w-full px-3 py-2 bg-transparent border border-gray-700 rounded-md text-white focus:outline-none focus:ring-1 focus:ring-white"
               />
             </div>
           </div>
           
           {/* Images */}
-          <div className="space-y">
-            <h3 className="form-section-title">Images</h3>
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-white border-b border-gray-700 pb-2 uppercase">
+              Images
+            </h3>
             
-            <div className="form-group">
-              <label>Cover Image</label>
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-300">Cover Image</label>
               <input
                 id="coverImage"
                 type="file"
                 accept="image/*"
                 onChange={handleCoverImageChange}
                 required={!editingId}
+                className="w-full px-3 py-2 bg-transparent border border-gray-700 rounded-md text-white file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-white file:text-[#161617] hover:file:bg-gray-200"
               />
-              {editingId && <p className="help-text">Leave empty to keep current image</p>}
+              {editingId && <p className="text-xs text-gray-400 mt-1">Leave empty to keep current image</p>}
             </div>
             
-            <div className="form-group">
-              <label>Additional Images (max 5)</label>
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-300">Additional Images (max 5)</label>
               <input
                 id="additionalImages"
                 type="file"
                 accept="image/*"
                 multiple
                 onChange={handleAdditionalImagesChange}
+                className="w-full px-3 py-2 bg-transparent border border-gray-700 rounded-md text-white file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-white file:text-[#161617] hover:file:bg-gray-200"
               />
-              {editingId && <p className="help-text">Upload new images to replace existing ones</p>}
+              {editingId && <p className="text-xs text-gray-400 mt-1">Upload new images to replace existing ones</p>}
             </div>
           </div>
           
           {/* Specifications */}
-          <div className="space-y">
-            <h3 className="form-section-title">Specifications</h3>
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-white border-b border-gray-700 pb-2 uppercase">
+              Specifications
+            </h3>
             
-            <div className="specs-grid">
-              <div className="form-group">
-                <label>Length</label>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-300">Length</label>
                 <input
                   type="text"
                   name="specifications.length"
                   value={formData.specifications.length}
                   onChange={handleInputChange}
+                  className="w-full px-3 py-2 bg-transparent border border-gray-700 rounded-md text-white focus:outline-none focus:ring-1 focus:ring-white"
                 />
               </div>
               
-              <div className="form-group">
-                <label>Beam</label>
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-300">Beam</label>
                 <input
                   type="text"
                   name="specifications.beam"
                   value={formData.specifications.beam}
                   onChange={handleInputChange}
+                  className="w-full px-3 py-2 bg-transparent border border-gray-700 rounded-md text-white focus:outline-none focus:ring-1 focus:ring-white"
                 />
               </div>
               
-              <div className="form-group">
-                <label>Draft</label>
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-300">Draft</label>
                 <input
                   type="text"
                   name="specifications.draft"
                   value={formData.specifications.draft}
                   onChange={handleInputChange}
+                  className="w-full px-3 py-2 bg-transparent border border-gray-700 rounded-md text-white focus:outline-none focus:ring-1 focus:ring-white"
                 />
               </div>
               
-              <div className="form-group">
-                <label>Gross Tonnage</label>
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-300">Gross Tonnage</label>
                 <input
                   type="text"
                   name="specifications.grossTonnage"
                   value={formData.specifications.grossTonnage}
                   onChange={handleInputChange}
+                  className="w-full px-3 py-2 bg-transparent border border-gray-700 rounded-md text-white focus:outline-none focus:ring-1 focus:ring-white"
                 />
               </div>
               
-              <div className="form-group">
-                <label>Cruising Speed</label>
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-300">Cruising Speed</label>
                 <input
                   type="text"
                   name="specifications.cruisingSpeed"
                   value={formData.specifications.cruisingSpeed}
                   onChange={handleInputChange}
+                  className="w-full px-3 py-2 bg-transparent border border-gray-700 rounded-md text-white focus:outline-none focus:ring-1 focus:ring-white"
                 />
               </div>
               
-              <div className="form-group">
-                <label>Max Speed</label>
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-300">Max Speed</label>
                 <input
                   type="text"
                   name="specifications.maxSpeed"
                   value={formData.specifications.maxSpeed}
                   onChange={handleInputChange}
+                  className="w-full px-3 py-2 bg-transparent border border-gray-700 rounded-md text-white focus:outline-none focus:ring-1 focus:ring-white"
                 />
               </div>
               
-              <div className="form-group">
-                <label>Built</label>
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-300">Built</label>
                 <input
                   type="text"
                   name="specifications.built"
                   value={formData.specifications.built}
                   onChange={handleInputChange}
+                  className="w-full px-3 py-2 bg-transparent border border-gray-700 rounded-md text-white focus:outline-none focus:ring-1 focus:ring-white"
                 />
               </div>
               
-              <div className="form-group">
-                <label>Builder</label>
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-300">Builder</label>
                 <input
                   type="text"
                   name="specifications.builder"
                   value={formData.specifications.builder}
                   onChange={handleInputChange}
+                  className="w-full px-3 py-2 bg-transparent border border-gray-700 rounded-md text-white focus:outline-none focus:ring-1 focus:ring-white"
                 />
               </div>
               
-              <div className="form-group">
-                <label>Exterior</label>
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-300">Exterior</label>
                 <input
                   type="text"
                   name="specifications.exterior"
                   value={formData.specifications.exterior}
                   onChange={handleInputChange}
+                  className="w-full px-3 py-2 bg-transparent border border-gray-700 rounded-md text-white focus:outline-none focus:ring-1 focus:ring-white"
                 />
               </div>
               
-              <div className="form-group">
-                <label>Interior</label>
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-300">Interior</label>
                 <input
                   type="text"
                   name="specifications.interior"
                   value={formData.specifications.interior}
                   onChange={handleInputChange}
+                  className="w-full px-3 py-2 bg-transparent border border-gray-700 rounded-md text-white focus:outline-none focus:ring-1 focus:ring-white"
                 />
               </div>
               
-              <div className="form-group">
-                <label>Guests</label>
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-300">Guests</label>
                 <input
                   type="number"
                   name="specifications.guests"
                   value={formData.specifications.guests}
                   onChange={handleInputChange}
+                  className="w-full px-3 py-2 bg-transparent border border-gray-700 rounded-md text-white focus:outline-none focus:ring-1 focus:ring-white"
                 />
               </div>
               
-              <div className="form-group">
-                <label>Cabins</label>
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-300">Cabins</label>
                 <input
                   type="number"
                   name="specifications.cabins"
                   value={formData.specifications.cabins}
                   onChange={handleInputChange}
+                  className="w-full px-3 py-2 bg-transparent border border-gray-700 rounded-md text-white focus:outline-none focus:ring-1 focus:ring-white"
                 />
               </div>
             </div>
           </div>
           
           {/* Submit Button */}
-          <div className="button-container">
+          <div className="flex space-x-4 pt-6">
             {editingId && (
               <button
                 type="button"
                 onClick={cancelEdit}
-                className="button button-secondary"
                 disabled={loading}
+                className="px-6 py-3 bg-transparent border border-white text-red-500 rounded-md hover:bg-gray-800 transition flex-1 uppercase tracking-wider font-medium"
               >
                 Cancel
               </button>
             )}
             <button
               type="submit"
-              className="button button-primary"
               disabled={loading}
+              className="px-6 py-3 bg-white text-[#161617] rounded-md hover:bg-gray-200 transition flex-1 uppercase tracking-wider font-medium"
             >
               {loading ? 'Processing...' : editingId ? 'Update Yacht' : 'Add Yacht'}
             </button>
@@ -498,60 +525,60 @@ function YachtManagementSystem() {
         </form>
       </div>
       
-      {/* Yacht List Section */}
-      <div className="list-section">
-        <h2>Yacht List</h2>
+      {/* Yacht List Section - Right Side */}
+      <div className="w-full md:w-3/5 p-6 overflow-y-auto">
+        <h2 className="text-2xl font-bold mb-6 text-white uppercase tracking-wider">Yacht List</h2>
         
         {yachts.length === 0 ? (
-          <div className="empty-list">
-            <p>No yachts added yet</p>
+          <div className="p-8 bg-gray-800 bg-opacity-50 rounded-lg text-center">
+            <p className="text-gray-400">No yachts added yet</p>
           </div>
         ) : (
-          <div className="yacht-list">
+          <div className="space-y-6">
             {yachts.map((yacht) => (
-              <div key={yacht.id} className="yacht-card">
-                <div className="yacht-content">
+              <div key={yacht.id} className="bg-[#1c1c1d] rounded-lg shadow-xl overflow-hidden border border-gray-800">
+                <div className="flex flex-col md:flex-row">
                   {/* Yacht Image */}
-                  <div className="yacht-image-container">
+                  <div className="w-full md:w-2/5 h-64 md:h-auto overflow-hidden">
                     {yacht.image ? (
                       <img 
                         src={yacht.image} 
                         alt={yacht.name} 
-                        className="yacht-image"
+                        className="w-full h-full object-cover"
                       />
                     ) : (
-                      <div className="no-image">
-                        <span>No Image</span>
+                      <div className="w-full h-full flex items-center justify-center bg-gray-700">
+                        <span className="text-gray-400">No Image</span>
                       </div>
                     )}
                   </div>
                   
                   {/* Yacht Details */}
-                  <div className="yacht-details">
-                    <h3 className="yacht-name">{yacht.name}</h3>
-                    <p className="yacht-price">{yacht.price}</p>
-                    <p className="yacht-route">{yacht.route}</p>
+                  <div className="w-full md:w-3/5 p-6">
+                    <h3 className="text-xl font-bold text-white uppercase">{yacht.name}</h3>
+                    <p className="text-green-400 text-lg font-semibold">{yacht.price}</p>
+                    <p className="text-gray-400 mb-4">{yacht.route}</p>
                     
-                    <div className="yacht-specs">
-                      <h4>Specifications:</h4>
-                      <div className="specs-display-grid">
-                        <p><span className="spec-label">Length:</span> {yacht.specifications?.length}</p>
-                        <p><span className="spec-label">Guests:</span> {yacht.specifications?.guests}</p>
-                        <p><span className="spec-label">Cabins:</span> {yacht.specifications?.cabins}</p>
-                        <p><span className="spec-label">Builder:</span> {yacht.specifications?.builder}</p>
+                    <div className="mt-3">
+                      <h4 className="text-sm font-semibold text-gray-300 mb-2 uppercase">Specifications:</h4>
+                      <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm">
+                        <p><span className="text-gray-400">Length:</span> {yacht.specifications?.length}</p>
+                        <p><span className="text-gray-400">Guests:</span> {yacht.specifications?.guests}</p>
+                        <p><span className="text-gray-400">Cabins:</span> {yacht.specifications?.cabins}</p>
+                        <p><span className="text-gray-400">Builder:</span> {yacht.specifications?.builder}</p>
                       </div>
                     </div>
                     
-                    <div className="yacht-actions">
+                    <div className="mt-6 flex space-x-4">
                       <button
                         onClick={() => handleEdit(yacht)}
-                        className="button button-primary button-small"
+                        className="px-5 py-2 bg-white text-[#161617] rounded-md hover:bg-gray-200 transition font-medium"
                       >
                         Edit
                       </button>
                       <button
                         onClick={() => handleDelete(yacht)}
-                        className="button button-danger button-small"
+                        className="px-5 py-2 bg-transparent border border-white text-red-500 rounded-md hover:bg-gray-800 transition font-medium"
                         disabled={loading}
                       >
                         Delete
