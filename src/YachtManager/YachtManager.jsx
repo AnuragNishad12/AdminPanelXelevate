@@ -280,9 +280,9 @@ function YachtManagementSystem() {
 
       {/* Form Section - Left Side */}
       <div className="w-full md:w-2/5 p-6 overflow-y-auto border-r border-gray-800 ">
-        <h2 className="text-2xl font-bold mb-6 text-white uppercase tracking-wider">
+      <h1 className="text-2xl font-bold mb-6 text-white uppercase tracking-wider">
           {editingId ? 'Edit Yacht' : 'Add New Yacht'}
-        </h2>
+        </h1>
         
         <form id="yachtForm" onSubmit={handleSubmit} className="space-y-8">
           {/* Basic Information */}
@@ -517,7 +517,7 @@ function YachtManagementSystem() {
             <button
               type="submit"
               disabled={loading}
-              className="px-6 py-3 bg-white text-[#161617] rounded-md hover:bg-gray-200 transition flex-1 uppercase tracking-wider font-medium"
+              className="px-6 py-3 bg-white text-white rounded-md hover:bg-gray-200 transition flex-1 uppercase tracking-wider font-medium"
             >
               {loading ? 'Processing...' : editingId ? 'Update Yacht' : 'Add Yacht'}
             </button>
@@ -572,7 +572,7 @@ function YachtManagementSystem() {
                     <div className="mt-6 flex space-x-4">
                       <button
                         onClick={() => handleEdit(yacht)}
-                        className="px-5 py-2 bg-white text-[#161617] rounded-md hover:bg-gray-200 transition font-medium"
+                        className="px-5 py-2 bg-white text-white rounded-md hover:bg-gray-200 transition font-medium"
                       >
                         Edit
                       </button>
