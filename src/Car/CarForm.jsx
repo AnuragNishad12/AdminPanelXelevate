@@ -14,10 +14,11 @@ import '../Car/CarForm.css'
 const CarForm = () => {
   const [formData, setFormData] = useState({
     title: "",
-    city: "",           // New field for city
+    city: "",           // Field for city
+    category: "",       // NEW: Field for car category (SUV, Sport, Luxury, etc.)
     description: "",
     totalTime: "",
-    kilometers: "",     // New field for KM
+    kilometers: "",     // Field for KM
     pax: "",
     price: "",
   });
@@ -94,6 +95,7 @@ const CarForm = () => {
     setFormData({
       title: "",
       city: "",
+      category: "",
       description: "",
       totalTime: "",
       kilometers: "",
@@ -181,6 +183,7 @@ const CarForm = () => {
     setFormData({
       title: car.title,
       city: car.city || "",
+      category: car.category || "",
       description: car.description,
       totalTime: car.totalTime,
       kilometers: car.kilometers || "",
@@ -241,7 +244,7 @@ const CarForm = () => {
         <div className="car-form-container">
           <h2 className="form-title">{editingCar ? "Update Car Details" : "Add Car Details"}</h2>
           <form onSubmit={handleSubmit} className="car-form">
-            {/* Cover Image Upload - Fixed Version */}
+            {/* Cover Image Upload */}
             <div className="form-group file-upload-group">
               <label htmlFor="cover-image">Cover Image</label>
               <div className="file-upload-container">
@@ -266,7 +269,7 @@ const CarForm = () => {
               )}
             </div>
             
-            {/* Additional Images Upload - Fixed Version */}
+            {/* Additional Images Upload */}
             <div className="form-group file-upload-group">
               <label htmlFor="additional-images">Additional Images (Up to 6)</label>
               <div className="file-upload-container">
@@ -318,6 +321,26 @@ const CarForm = () => {
                 onChange={handleChange}
                 required
               />
+            </div>
+            
+            {/* NEW: Category Field */}
+            <div className="form-group">
+              <label>Category</label>
+              <select
+                name="category"
+                value={formData.category}
+                onChange={handleChange}
+                required
+              >
+                <option value="">Select Category</option>
+                <option value="luxury">Luxury</option>
+                <option value="sport">Sport</option>
+                <option value="suv">SUV</option>
+                <option value="sedan">Sedan</option>
+                <option value="convertible">Convertible</option>
+                <option value="coupe">Coupe</option>
+                <option value="supercar">Supercar</option>
+              </select>
             </div>
             
             <div className="form-group">
@@ -414,6 +437,11 @@ const CarForm = () => {
                 <div className="car-details">
                   <h3>{car.title}</h3>
                   {car.city && <p className="car-city">{car.city}</p>}
+                  {car.category && (
+                    <p className="car-category">
+                      <span className="category-badge">{car.category}</span>
+                    </p>
+                  )}
                   <p className="car-description">{car.description}</p>
                   <div className="car-info">
                     <span>Time: {car.totalTime}</span>
