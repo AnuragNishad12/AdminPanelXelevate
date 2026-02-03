@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { ref as dbRef, push, remove, update, onValue } from "firebase/database";
+import { ref as dbRef, push, remove, update, onValue, set } from "firebase/database";
+
 import { 
   ref, 
   uploadBytesResumable, 
@@ -31,7 +32,7 @@ const CarForm = () => {
   const [cars, setCars] = useState([]);
   const [editingCar, setEditingCar] = useState(null);
 
-  // Fetch cars from database
+  
   useEffect(() => {
     const carsRef = dbRef(database, "cars");
     const unsubscribe = onValue(carsRef, (snapshot) => {
@@ -129,55 +130,75 @@ const CarForm = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!coverImage && !editingCar) {
-      alert("Please select a cover image first");
-      return;
+  e.preventDefault();
+
+  if (!coverImage && !editingCar) {
+    alert("Please select a cover image first");
+    return;
+  }
+
+  setUploading(true);
+
+  try {
+    let carId;
+    let carRef;
+
+    // ✅ CREATE or REUSE carId
+    if (editingCar) {
+      carId = editingCar.id;
+      carRef = dbRef(database, `cars/${carId}`);
+    } else {
+      carRef = push(dbRef(database, "cars"));
+      carId = carRef.key;
     }
 
-    setUploading(true);
-
-    try {
-      let coverImageURL = editingCar?.coverImg || "";
-      let additionalImageURLs = editingCar?.additionalImages || [];
-
-      // Upload cover image if provided
-      if (coverImage) {
-        coverImageURL = await uploadImage(coverImage, `car_images/cover_${uuidv4()}`);
-      }
-
-      // Upload additional images if provided
-      if (additionalImages.length > 0) {
-        const uploadPromises = additionalImages.map((file, index) => 
-          uploadImage(file, `car_images/additional_${uuidv4()}_${index}`)
-        );
-        additionalImageURLs = await Promise.all(uploadPromises);
-      }
-
-      const carData = {
-        ...formData,
-        coverImg: coverImageURL,
-        additionalImages: additionalImageURLs,
-      };
-
-      if (editingCar) {
-        // Update existing car
-        await update(dbRef(database, `cars/${editingCar.id}`), carData);
-        alert("Car updated successfully!");
-      } else {
-        // Add new car
-        await push(dbRef(database, "cars"), carData);
-        alert("Car added successfully!");
-      }
-
-      resetForm();
-    } catch (error) {
-      console.error("Error:", error);
-      alert("Operation failed: " + error.message);
-    } finally {
-      setUploading(false);
+    // ✅ UPLOAD COVER IMAGE
+    let coverImageURL = editingCar?.coverImg || "";
+    if (coverImage) {
+      coverImageURL = await uploadImage(
+        coverImage,
+        `car_images/${carId}/cover.jpg`
+      );
     }
-  };
+
+    // ✅ UPLOAD ADDITIONAL IMAGES
+    let additionalImageURLs = editingCar?.additionalImages || [];
+    if (additionalImages.length > 0) {
+      additionalImageURLs = await Promise.all(
+        additionalImages.map((file, index) =>
+          uploadImage(
+            file,
+            `car_images/${carId}/gallery/img_${index + 1}.jpg`
+          )
+        )
+      );
+    }
+
+    // ✅ FINAL DATA (IMAGES ARE NOW LINKED TO THIS CAR)
+    const carData = {
+      ...formData,
+      coverImg: coverImageURL,
+      additionalImages: additionalImageURLs,
+    };
+
+    // ✅ SAVE
+    if (editingCar) {
+      await update(carRef, carData);
+      alert("Car updated successfully!");
+    } else {
+      await set(carRef, carData);
+      alert("Car added successfully!");
+    }
+
+    resetForm();
+  } catch (error) {
+    console.error(error);
+    alert("Operation failed");
+  } finally {
+    setUploading(false);
+  }
+};
+;
 
   const handleEdit = (car) => {
     setFormData({
