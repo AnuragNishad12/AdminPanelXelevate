@@ -358,7 +358,7 @@ const CarForm = () => {
                 <option value="sport">Sport</option>
                 <option value="suv">SUV</option>
                 <option value="sedan">Sedan</option>
-                <option value="convertible">Convertible</option>
+                <option value="convertible">Cabriolet</option>
                 <option value="coupe">Coupe</option>
                 <option value="supercar">Supercar</option>
               </select>
