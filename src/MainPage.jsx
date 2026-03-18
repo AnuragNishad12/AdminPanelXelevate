@@ -17,6 +17,7 @@ const cardData = [
   { title: "Blogs", route: "/Blogs" },
   {title:"Specific Enquiry",route:"/SpecificEnquiry"},
   { title: "Sign Up", route: "/SignUp" },
+  {title:"Events", route:"/Events"}
   
  
 ];

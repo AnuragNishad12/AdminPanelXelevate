@@ -18,6 +18,7 @@ import YachtManager from './YachtManager/YachtManager';
 import TripList from './Enquiry/TripList';
 import SubscribersPage from './SubscribersPage/SubscribersPage';
 import SpecificEnquiry from './SpecificEnuiry/SpecificEnquiry';
+import XelevateEvents from './Events/Events';
 
 function App() {
   const [count, setCount] = useState(0);
@@ -42,6 +43,7 @@ function App() {
           <Route path="/ClientEnquiry" element={<TripList />} />
           <Route path="/Subscribers" element={<SubscribersPage />} />
           <Route path="/SpecificEnquiry" element={<SpecificEnquiry/>}/>
+          <Route path="/Events" element={<XelevateEvents/>}/>
         </Routes>
       </Router>
     </>
