@@ -16,8 +16,12 @@ const cardData = [
   { title: "Subscribers", route: "/Subscribers" },
   { title: "Blogs", route: "/Blogs" },
   {title:"Specific Enquiry",route:"/SpecificEnquiry"},
+  {title:"Events", route:"/Events"},
+  {title:"Enquiry",route:"/Enquiry"},
+  {title:"EventsBooked", route:"/EventsBooked"},
   { title: "Sign Up", route: "/SignUp" },
-  {title:"Events", route:"/Events"}
+  {title:"EmptyLeg" , route:"/EmptyLeg"},
+  {title:"CarBookings", route:"/CarBookings"}
   
  
 ];

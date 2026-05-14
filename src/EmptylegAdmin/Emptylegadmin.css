@@ -1,0 +1,650 @@
+/* ═══════════════════════════════════════════════════════
+   EmptyLegAdmin.css  –  dark aviation luxury theme
+   ═══════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700&display=swap');
+
+:root {
+  --el-bg        : #0a0c0f;
+  --el-surface   : #111418;
+  --el-surface-2 : #181c22;
+  --el-border    : #242830;
+  --el-border-2  : #2e3540;
+
+  --el-text      : #e8eaf0;
+  --el-muted     : #7a8394;
+  --el-dim       : #4a5260;
+
+  --el-gold      : #c9a84c;
+  --el-gold-dim  : #7a6128;
+  --el-gold-glow : rgba(201,168,76,0.12);
+
+  --el-green     : #3ecf8e;
+  --el-green-dim : rgba(62,207,142,0.12);
+  --el-red       : #f56565;
+  --el-red-dim   : rgba(245,101,101,0.12);
+  --el-blue      : #5b9cf6;
+  --el-blue-dim  : rgba(91,156,246,0.12);
+  --el-grey-dim  : rgba(120,130,150,0.12);
+
+  --el-radius    : 14px;
+  --el-radius-sm : 8px;
+  --el-font-head : 'Syne', sans-serif;
+  --el-font-body : 'Cormorant Garamond', serif;
+  --el-font-mono : 'DM Mono', monospace;
+  --el-shadow    : 0 4px 24px rgba(0,0,0,0.5);
+  --el-shadow-lg : 0 12px 48px rgba(0,0,0,0.7);
+}
+
+/* ── Root ── */
+.el-root {
+  background : var(--el-bg);
+  min-height : 100vh;
+  padding    : 2rem 2.5rem;
+  color      : var(--el-text);
+  font-family: var(--el-font-body);
+  position   : relative;
+}
+
+/* subtle grid texture */
+.el-root::before {
+  content   : '';
+  position  : fixed;
+  inset     : 0;
+  background: repeating-linear-gradient(
+    0deg, transparent, transparent 39px,
+    rgba(255,255,255,0.015) 39px, rgba(255,255,255,0.015) 40px
+  ),
+  repeating-linear-gradient(
+    90deg, transparent, transparent 39px,
+    rgba(255,255,255,0.015) 39px, rgba(255,255,255,0.015) 40px
+  );
+  pointer-events: none;
+  z-index   : 0;
+}
+.el-root > * { position: relative; z-index: 1; }
+
+/* ── Toast ── */
+.el-toast {
+  position   : fixed;
+  top        : 1.5rem;
+  right      : 1.5rem;
+  z-index    : 9999;
+  padding    : .75rem 1.25rem;
+  border-radius: var(--el-radius-sm);
+  font-family  : var(--el-font-head);
+  font-size    : .85rem;
+  font-weight  : 600;
+  letter-spacing: .04em;
+  animation    : elSlideIn .25s ease;
+  backdrop-filter: blur(12px);
+}
+.el-toast--success {
+  background: rgba(62,207,142,0.15);
+  border    : 1px solid var(--el-green);
+  color     : var(--el-green);
+}
+.el-toast--error {
+  background: rgba(245,101,101,0.15);
+  border    : 1px solid var(--el-red);
+  color     : var(--el-red);
+}
+@keyframes elSlideIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Header ── */
+.el-header {
+  display        : flex;
+  justify-content: space-between;
+  align-items    : flex-start;
+  gap            : 2rem;
+  margin-bottom  : 2rem;
+  padding-bottom : 2rem;
+  border-bottom  : 1px solid var(--el-border);
+}
+.el-header__eyebrow {
+  font-family   : var(--el-font-head);
+  font-size     : .65rem;
+  font-weight   : 700;
+  letter-spacing: .2em;
+  color         : var(--el-gold);
+  display       : block;
+  margin-bottom : .35rem;
+}
+.el-header__title {
+  font-family  : var(--el-font-head);
+  font-size    : 2rem;
+  font-weight  : 700;
+  color        : var(--el-text);
+  margin       : 0 0 .4rem;
+  display      : flex;
+  align-items  : center;
+  gap          : .75rem;
+}
+.el-header__count {
+  font-size    : .95rem;
+  background   : var(--el-gold-glow);
+  border       : 1px solid var(--el-gold-dim);
+  color        : var(--el-gold);
+  padding      : .15rem .6rem;
+  border-radius: 20px;
+  font-family  : var(--el-font-mono);
+}
+.el-header__sub {
+  font-size : 1rem;
+  color     : var(--el-muted);
+  margin    : 0;
+  font-style: italic;
+}
+
+/* ── Stat pills ── */
+.el-stats {
+  display: flex;
+  gap    : .75rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.el-stat-pill {
+  display      : flex;
+  flex-direction: column;
+  align-items  : center;
+  padding      : .6rem 1rem;
+  border-radius: var(--el-radius-sm);
+  border       : 1px solid transparent;
+  min-width    : 70px;
+  text-align   : center;
+}
+.el-stat-pill__num {
+  font-family: var(--el-font-head);
+  font-size  : 1.4rem;
+  font-weight: 700;
+  line-height: 1;
+}
+.el-stat-pill__lbl {
+  font-family   : var(--el-font-head);
+  font-size     : .6rem;
+  letter-spacing: .12em;
+  font-weight   : 600;
+  margin-top    : .25rem;
+  opacity       : .8;
+}
+.el-badge--available, .el-stat-pill.el-badge--available {
+  background: var(--el-green-dim);
+  border-color: var(--el-green);
+  color: var(--el-green);
+}
+.el-badge--booked, .el-stat-pill.el-badge--booked {
+  background: var(--el-blue-dim);
+  border-color: var(--el-blue);
+  color: var(--el-blue);
+}
+.el-badge--expired, .el-stat-pill.el-badge--expired {
+  background: var(--el-grey-dim);
+  border-color: var(--el-dim);
+  color: var(--el-muted);
+}
+.el-badge--cancelled, .el-stat-pill.el-badge--cancelled {
+  background: var(--el-red-dim);
+  border-color: var(--el-red);
+  color: var(--el-red);
+}
+
+/* ── Controls ── */
+.el-controls {
+  display       : flex;
+  flex-direction: column;
+  gap           : 1rem;
+  margin-bottom : 1.75rem;
+}
+.el-search-wrap {
+  position : relative;
+  max-width: 440px;
+}
+.el-search-icon {
+  position : absolute;
+  left     : 1rem;
+  top      : 50%;
+  transform: translateY(-50%);
+  color    : var(--el-muted);
+  font-size: 1.1rem;
+}
+.el-search {
+  width          : 100%;
+  background     : var(--el-surface);
+  border         : 1px solid var(--el-border);
+  border-radius  : var(--el-radius-sm);
+  padding        : .65rem 1rem .65rem 2.5rem;
+  color          : var(--el-text);
+  font-family    : var(--el-font-head);
+  font-size      : .85rem;
+  outline        : none;
+  transition     : border-color .2s;
+}
+.el-search:focus { border-color: var(--el-gold-dim); }
+.el-search::placeholder { color: var(--el-dim); }
+
+.el-filter-bar {
+  display  : flex;
+  gap      : .5rem;
+  flex-wrap: wrap;
+}
+.el-filter-btn {
+  background   : var(--el-surface);
+  border       : 1px solid var(--el-border);
+  border-radius: 20px;
+  color        : var(--el-muted);
+  font-family  : var(--el-font-head);
+  font-size    : .75rem;
+  font-weight  : 600;
+  letter-spacing: .08em;
+  padding      : .4rem 1rem;
+  cursor       : pointer;
+  transition   : all .2s;
+}
+.el-filter-btn:hover { border-color: var(--el-border-2); color: var(--el-text); }
+.el-filter-btn--active {
+  background  : var(--el-gold-glow);
+  border-color: var(--el-gold);
+  color       : var(--el-gold);
+}
+
+/* ── Card Grid ── */
+.el-grid {
+  display      : flex;
+  flex-direction: column;
+  gap          : 1rem;
+}
+
+/* ── Card ── */
+.el-card {
+  background   : var(--el-surface);
+  border       : 1px solid var(--el-border);
+  border-radius: var(--el-radius);
+  overflow     : hidden;
+  transition   : border-color .25s, box-shadow .25s;
+}
+.el-card:hover       { border-color: var(--el-border-2); }
+.el-card--open       { border-color: var(--el-gold-dim); box-shadow: var(--el-shadow); }
+
+/* ── Card Header ── */
+.el-card__header {
+  display    : flex;
+  align-items: center;
+  gap        : 1.5rem;
+  padding    : 1.2rem 1.5rem;
+  cursor     : pointer;
+  user-select: none;
+}
+.el-card__header:hover .el-card__chevron { color: var(--el-gold); }
+
+/* Route */
+.el-card__route {
+  display    : flex;
+  align-items: center;
+  gap        : .75rem;
+  min-width  : 220px;
+}
+.el-card__city {
+  font-family: var(--el-font-head);
+  font-size  : 1rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.el-card__city--dep  { color: var(--el-text); }
+.el-card__city--dest { color: var(--el-gold); }
+.el-card__arrow {
+  color : var(--el-gold);
+  width : 60px;
+  flex  : 0 0 60px;
+  opacity: .7;
+}
+.el-card__arrow svg { display: block; width: 100%; }
+
+/* Aircraft + status */
+.el-card__meta {
+  display      : flex;
+  flex-direction: column;
+  gap          : .4rem;
+  min-width    : 160px;
+}
+.el-card__aircraft-name {
+  font-family: var(--el-font-head);
+  font-size  : .9rem;
+  font-weight: 600;
+  color      : var(--el-text);
+}
+.el-card__aircraft-type {
+  font-family: var(--el-font-head);
+  font-size  : .7rem;
+  color      : var(--el-muted);
+  letter-spacing: .06em;
+}
+
+/* Badge */
+.el-badge {
+  display      : inline-block;
+  padding      : .2rem .7rem;
+  border-radius: 20px;
+  font-family  : var(--el-font-head);
+  font-size    : .65rem;
+  font-weight  : 700;
+  letter-spacing: .1em;
+  border       : 1px solid transparent;
+  align-self   : flex-start;
+}
+
+/* Summary */
+.el-card__summary {
+  display      : flex;
+  flex-direction: column;
+  gap          : .5rem;
+  flex         : 1;
+}
+.el-card__price-preview {
+  display    : flex;
+  align-items: baseline;
+  gap        : .5rem;
+}
+.el-card__price-label {
+  font-family   : var(--el-font-head);
+  font-size     : .65rem;
+  font-weight   : 600;
+  letter-spacing: .1em;
+  color         : var(--el-muted);
+}
+.el-card__price-val {
+  font-family: var(--el-font-head);
+  font-size  : 1rem;
+  font-weight: 700;
+  color      : var(--el-gold);
+}
+
+/* Chevron */
+.el-card__chevron {
+  font-size  : 1.5rem;
+  color      : var(--el-dim);
+  transition : transform .3s, color .2s;
+  line-height: 1;
+  margin-left: auto;
+}
+.el-card__chevron--open { transform: rotate(90deg); }
+
+/* ── Seat bar ── */
+.el-seat-bar-wrap {
+  display    : flex;
+  align-items: center;
+  gap        : .6rem;
+}
+.el-seat-bar {
+  flex          : 1;
+  height        : 5px;
+  background    : var(--el-surface-2);
+  border-radius : 99px;
+  overflow      : hidden;
+}
+.el-seat-bar__fill {
+  height        : 100%;
+  background    : linear-gradient(90deg, var(--el-green), var(--el-gold));
+  border-radius : 99px;
+  transition    : width .4s ease;
+}
+.el-seat-label {
+  font-family: var(--el-font-mono);
+  font-size  : .7rem;
+  color      : var(--el-muted);
+  white-space: nowrap;
+}
+
+/* ── Card Body ── */
+.el-card__body {
+  border-top: 1px solid var(--el-border);
+  padding   : 1.5rem;
+  display   : flex;
+  flex-direction: column;
+  gap       : 1.25rem;
+  animation : elFadeIn .25s ease;
+}
+@keyframes elFadeIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Edit Section ── */
+.el-edit-section {
+  background   : var(--el-surface-2);
+  border       : 1px solid var(--el-gold-dim);
+  border-radius: var(--el-radius-sm);
+  padding      : 1.25rem;
+}
+.el-edit-section__title {
+  font-family   : var(--el-font-head);
+  font-size     : .75rem;
+  font-weight   : 700;
+  letter-spacing: .12em;
+  color         : var(--el-gold);
+  margin        : 0 0 1rem;
+}
+.el-edit-grid {
+  display              : grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap                  : 1rem;
+  margin-bottom        : 1.25rem;
+}
+.el-edit-item {
+  display      : flex;
+  flex-direction: column;
+  gap          : .35rem;
+}
+.el-edit-label {
+  font-family   : var(--el-font-head);
+  font-size     : .65rem;
+  font-weight   : 700;
+  letter-spacing: .12em;
+  color         : var(--el-muted);
+  text-transform: uppercase;
+}
+
+/* Editable field */
+.el-editable {
+  display      : inline-flex;
+  align-items  : center;
+  gap          : .4rem;
+  cursor       : pointer;
+  font-family  : var(--el-font-mono);
+  font-size    : .9rem;
+  color        : var(--el-text);
+  padding      : .35rem .6rem;
+  border-radius: var(--el-radius-sm);
+  border       : 1px dashed var(--el-border-2);
+  transition   : border-color .2s, background .2s;
+}
+.el-editable:hover {
+  border-color: var(--el-gold-dim);
+  background  : var(--el-gold-glow);
+  color       : var(--el-gold);
+}
+.el-pen {
+  font-size : .75rem;
+  opacity   : .5;
+  flex-shrink: 0;
+}
+.el-placeholder {
+  font-style: italic;
+  color     : var(--el-dim);
+  font-size : .8rem;
+}
+
+.el-edit-wrap { display: inline-flex; }
+.el-edit-input {
+  background   : var(--el-surface);
+  border       : 1px solid var(--el-gold);
+  border-radius: var(--el-radius-sm);
+  color        : var(--el-gold);
+  font-family  : var(--el-font-mono);
+  font-size    : .9rem;
+  padding      : .3rem .6rem;
+  outline      : none;
+  width        : 140px;
+}
+
+/* Status select */
+.el-status-select {
+  background   : var(--el-surface);
+  border       : 1px solid var(--el-border-2);
+  border-radius: var(--el-radius-sm);
+  color        : var(--el-text);
+  font-family  : var(--el-font-head);
+  font-size    : .8rem;
+  padding      : .35rem .6rem;
+  cursor       : pointer;
+  outline      : none;
+}
+.el-status-select:focus { border-color: var(--el-gold-dim); }
+
+/* Seat dots visual */
+.el-seat-visual {
+  margin-top : .75rem;
+  padding-top: .75rem;
+  border-top : 1px solid var(--el-border);
+}
+.el-seat-visual__bar-wrap { margin-bottom: .75rem; }
+.el-seat-visual__dots {
+  display  : flex;
+  flex-wrap: wrap;
+  gap      : .4rem;
+}
+.el-seat-dot {
+  width        : 18px;
+  height       : 22px;
+  border-radius: 4px 4px 2px 2px;
+  border       : 1px solid var(--el-border-2);
+  background   : var(--el-surface);
+  transition   : background .3s, border-color .3s;
+  position     : relative;
+}
+.el-seat-dot::after {
+  content      : '';
+  position     : absolute;
+  bottom       : -4px;
+  left         : 50%;
+  transform    : translateX(-50%);
+  width        : 10px;
+  height       : 3px;
+  background   : var(--el-border-2);
+  border-radius: 2px;
+}
+.el-seat-dot--filled {
+  background  : var(--el-gold);
+  border-color: var(--el-gold);
+}
+.el-seat-dot--filled::after { background: var(--el-gold-dim); }
+
+/* Saving indicator */
+.el-saving-indicator {
+  display    : flex;
+  align-items: center;
+  gap        : .5rem;
+  font-family: var(--el-font-head);
+  font-size  : .75rem;
+  color      : var(--el-gold);
+  margin-top : .75rem;
+}
+
+/* ── Info Sections ── */
+.el-info-section {
+  padding   : 1rem 0;
+  border-top: 1px solid var(--el-border);
+}
+.el-info-section--meta { opacity: .7; }
+.el-info-section__title {
+  font-family   : var(--el-font-head);
+  font-size     : .72rem;
+  font-weight   : 700;
+  letter-spacing: .12em;
+  color         : var(--el-muted);
+  margin        : 0 0 .75rem;
+}
+.el-info-grid {
+  display              : grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap                  : .75rem;
+}
+.el-info-item {
+  display      : flex;
+  flex-direction: column;
+  gap          : .25rem;
+}
+.el-info-label {
+  font-family   : var(--el-font-head);
+  font-size     : .6rem;
+  font-weight   : 700;
+  letter-spacing: .1em;
+  color         : var(--el-dim);
+  text-transform: uppercase;
+}
+.el-info-value {
+  font-family: var(--el-font-body);
+  font-size  : .95rem;
+  color      : var(--el-text);
+}
+.el-info-value--mono {
+  font-family: var(--el-font-mono);
+  font-size  : .72rem;
+  color      : var(--el-muted);
+  word-break : break-all;
+}
+
+/* ── Loading / Empty ── */
+.el-loading, .el-empty {
+  display       : flex;
+  flex-direction: column;
+  align-items   : center;
+  justify-content: center;
+  padding       : 5rem 2rem;
+  color         : var(--el-muted);
+  font-family   : var(--el-font-head);
+  gap           : 1rem;
+}
+.el-empty__icon {
+  font-size : 3rem;
+  opacity   : .3;
+  animation : elFloat 3s ease-in-out infinite;
+}
+@keyframes elFloat {
+  0%,100% { transform: translateY(0); }
+  50%     { transform: translateY(-8px); }
+}
+
+/* Spinners */
+.el-spinner {
+  width        : 36px;
+  height       : 36px;
+  border       : 3px solid var(--el-border);
+  border-top   : 3px solid var(--el-gold);
+  border-radius: 50%;
+  animation    : elSpin .8s linear infinite;
+}
+.el-mini-spinner {
+  width        : 14px;
+  height       : 14px;
+  border       : 2px solid var(--el-border);
+  border-top   : 2px solid var(--el-gold);
+  border-radius: 50%;
+  animation    : elSpin .6s linear infinite;
+  flex-shrink  : 0;
+}
+@keyframes elSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .el-root           { padding: 1.25rem; }
+  .el-header         { flex-direction: column; gap: 1.25rem; }
+  .el-card__header   { flex-wrap: wrap; gap: 1rem; }
+  .el-card__route    { min-width: unset; }
+  .el-card__summary  { flex: 1 1 100%; }
+  .el-stats          { justify-content: flex-start; }
+}

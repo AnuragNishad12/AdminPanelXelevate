@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { ref, onValue, off, remove } from 'firebase/database';
 import { database } from '../firebaseConfig';
-import '../BookingsDisplay/BookingsDisplay.css';
+// import '../BookingsDisplay/BookingsDisplay.css';
 
 const BookingsDisplay = () => {
   const [bookings, setBookings] = useState([]);

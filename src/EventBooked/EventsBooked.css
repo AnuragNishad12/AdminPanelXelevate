@@ -1,0 +1,756 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500&display=swap');
+
+:root {
+  --bg:        #111318;
+  --surface:   #1c1f27;
+  --surface2:  #22262f;
+  --border:    #2e3240;
+  --gold:      #f0a500;
+  --gold-dim:  rgba(240, 165, 0, 0.13);
+  --teal:      #1dd1a1;
+  --teal-dim:  rgba(29, 209, 161, 0.12);
+  --red:       #ff6363;
+  --text:      #e8eaf0;
+  --muted:     #7a7f94;
+  --font-head: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ─────────────────────────────────────────────
+   Page Root
+───────────────────────────────────────────── */
+.eb-root {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  min-height: 100vh;
+  padding: 40px 24px 80px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ─────────────────────────────────────────────
+   Header
+───────────────────────────────────────────── */
+.eb-eyebrow {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 6px;
+}
+
+.eb-title {
+  font-family: var(--font-head);
+  font-size: clamp(26px, 4vw, 38px);
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.1;
+  margin-bottom: 28px;
+}
+
+.eb-title span {
+  color: var(--gold);
+}
+
+/* ─────────────────────────────────────────────
+   Stats Row
+───────────────────────────────────────────── */
+.eb-stats {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.eb-stat {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 24px;
+  flex: 1;
+  min-width: 130px;
+  position: relative;
+  overflow: hidden;
+}
+
+.eb-stat::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(240, 165, 0, 0.04) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.eb-stat-val {
+  font-family: var(--font-head);
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--gold);
+  line-height: 1;
+}
+
+.eb-stat-label {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+/* ─────────────────────────────────────────────
+   Filters
+───────────────────────────────────────────── */
+.eb-filters {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 28px;
+}
+
+.eb-search {
+  flex: 1;
+  min-width: 200px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 16px;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.eb-search::placeholder {
+  color: var(--muted);
+}
+
+.eb-search:focus {
+  border-color: var(--gold);
+}
+
+.eb-filter-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 9px 16px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.eb-filter-btn:hover {
+  border-color: var(--gold);
+  color: var(--text);
+}
+
+.eb-filter-btn.active {
+  background: var(--gold-dim);
+  border-color: var(--gold);
+  color: var(--gold);
+  font-weight: 500;
+}
+
+/* ─────────────────────────────────────────────
+   Grid
+───────────────────────────────────────────── */
+.eb-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 20px;
+}
+
+/* ─────────────────────────────────────────────
+   Card
+───────────────────────────────────────────── */
+.eb-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  animation: cardIn 0.4s ease both;
+}
+
+.eb-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 24px 56px rgba(0, 0, 0, 0.55);
+  border-color: rgba(240, 165, 0, 0.3);
+}
+
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Card Image ── */
+.eb-img-wrap {
+  position: relative;
+  height: 160px;
+  background: var(--surface2);
+  overflow: hidden;
+}
+
+.eb-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.75;
+  transition: opacity 0.3s ease, transform 0.4s ease;
+}
+
+.eb-card:hover .eb-img-wrap img {
+  opacity: 0.9;
+  transform: scale(1.04);
+}
+
+.eb-img-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1c1f27, #22262f);
+}
+
+.eb-img-placeholder svg {
+  opacity: 0.18;
+}
+
+/* ── Status Badge ── */
+.eb-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 11px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: capitalize;
+  backdrop-filter: blur(8px);
+  border: 1px solid;
+}
+
+.eb-badge.pending {
+  background: rgba(240, 165, 0, 0.18);
+  border-color: rgba(240, 165, 0, 0.4);
+  color: #f0a500;
+}
+
+.eb-badge.confirmed {
+  background: rgba(29, 209, 161, 0.18);
+  border-color: rgba(29, 209, 161, 0.4);
+  color: #1dd1a1;
+}
+
+.eb-badge.cancelled {
+  background: rgba(255, 99, 99, 0.18);
+  border-color: rgba(255, 99, 99, 0.4);
+  color: #ff6363;
+}
+
+.eb-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.eb-dot.pending {
+  background: #f0a500;
+  box-shadow: 0 0 6px #f0a500;
+}
+
+.eb-dot.confirmed {
+  background: #1dd1a1;
+  box-shadow: 0 0 6px #1dd1a1;
+}
+
+.eb-dot.cancelled {
+  background: #ff6363;
+  box-shadow: 0 0 6px #ff6363;
+}
+
+.eb-booking-ref {
+  position: absolute;
+  bottom: 10px;
+  left: 12px;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.4);
+  font-family: monospace;
+}
+
+/* ── Card Body ── */
+.eb-body {
+  padding: 20px;
+}
+
+.eb-event-name {
+  font-family: var(--font-head);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.3;
+  margin-bottom: 3px;
+}
+
+.eb-location {
+  font-size: 12px;
+  color: var(--gold);
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+
+.eb-org {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+
+.eb-org strong {
+  color: rgba(232, 234, 240, 0.65);
+  font-weight: 500;
+}
+
+/* ── Chips ── */
+.eb-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.eb-chip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 5px 10px;
+  font-size: 12px;
+  color: var(--text);
+}
+
+.eb-chip svg {
+  opacity: 0.55;
+  flex-shrink: 0;
+}
+
+.eb-chip.teal {
+  background: var(--teal-dim);
+  border-color: rgba(29, 209, 161, 0.25);
+  color: var(--teal);
+}
+
+/* ── Divider ── */
+.eb-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 14px 0;
+}
+
+/* ── User Row ── */
+.eb-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.eb-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--gold-dim);
+  border: 1.5px solid rgba(240, 165, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-head);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--gold);
+  flex-shrink: 0;
+}
+
+.eb-uname {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.eb-uemail {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* ── Contact Pills ── */
+.eb-contacts {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.eb-contact {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 4px 9px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.eb-contact svg {
+  opacity: 0.5;
+}
+
+/* ── Pricing Box ── */
+.eb-price-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+
+.eb-breakdown {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.eb-breakdown span {
+  color: rgba(232, 234, 240, 0.6);
+}
+
+.eb-total-label {
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-align: right;
+}
+
+.eb-total-amount {
+  font-family: var(--font-head);
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--gold);
+  text-align: right;
+}
+
+/* ─────────────────────────────────────────────
+   Empty State
+───────────────────────────────────────────── */
+.eb-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 80px 20px;
+  color: var(--muted);
+}
+
+.eb-empty-icon {
+  font-size: 50px;
+  margin-bottom: 14px;
+  opacity: 0.4;
+}
+
+.eb-empty-title {
+  font-family: var(--font-head);
+  font-size: 20px;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+/* ─────────────────────────────────────────────
+   Loading
+───────────────────────────────────────────── */
+.eb-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  gap: 16px;
+}
+
+.eb-spinner {
+  width: 42px;
+  height: 42px;
+  border: 3px solid var(--border);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.eb-loading-txt {
+  font-size: 13px;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+}
+
+/* ─────────────────────────────────────────────
+   Responsive
+───────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .eb-root {
+    padding: 24px 16px 60px;
+  }
+
+  .eb-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .eb-stat-val {
+    font-size: 22px;
+  }
+}
+
+/* ── Attendees Section — add these to your EventsBooked.css ── */
+
+/* ═══════════════════════════════════════════
+   ADD THESE TO THE BOTTOM OF EventsBooked.css
+═══════════════════════════════════════════ */
+
+/* ── Attendees ── */
+.eb-attendees-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.eb-attendees-label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #C88A56;
+}
+.eb-attendees-toggle {
+  font-size: 10px;
+  color: #C88A56;
+  background: rgba(200,138,86,0.08);
+  border: 1px solid rgba(200,138,86,0.25);
+  border-radius: 6px;
+  padding: 3px 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.eb-attendees-toggle:hover { background: rgba(200,138,86,0.18); }
+
+.eb-attendees-list { display: flex; flex-direction: column; gap: 5px; }
+
+.eb-attendee-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(200,138,86,0.12);
+  border-radius: 8px;
+  padding: 7px 10px;
+  transition: border-color 0.2s;
+}
+.eb-attendee-row:hover { border-color: rgba(200,138,86,0.28); }
+.eb-attendee-row.primary {
+  background: rgba(200,138,86,0.06);
+  border-color: rgba(200,138,86,0.22);
+}
+.eb-attendee-num {
+  font-size: 10px;
+  color: rgba(200,138,86,0.55);
+  font-weight: 700;
+  min-width: 14px;
+  text-align: center;
+}
+.eb-attendee-avatar {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #C88A56, #d4a574);
+  color: #000;
+  font-size: 9px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.eb-attendee-name {
+  font-size: 12px; color: #e0e0e0;
+  display: flex; align-items: center; gap: 6px; flex: 1;
+}
+.eb-attendee-primary-badge {
+  font-size: 9px; color: #C88A56;
+  background: rgba(200,138,86,0.12);
+  border: 1px solid rgba(200,138,86,0.3);
+  border-radius: 4px; padding: 1px 5px;
+  letter-spacing: 0.05em; text-transform: uppercase; font-weight: 700;
+}
+.eb-attendees-more {
+  font-size: 11px; color: #C88A56; text-align: center;
+  padding: 6px; cursor: pointer;
+  border: 1px dashed rgba(200,138,86,0.25); border-radius: 8px;
+  transition: background 0.2s;
+}
+.eb-attendees-more:hover { background: rgba(200,138,86,0.07); }
+
+/* ── Status Section ── */
+.eb-status-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.eb-status-section-label {
+  font-size: 11px;
+  color: #6b7280;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* ── Status Changer ── */
+.sc-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.sc-trigger {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 12px;
+  border-radius: 8px;
+  border: 1px solid;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  transition: opacity 0.2s, filter 0.2s;
+  white-space: nowrap;
+}
+.sc-trigger:hover:not(:disabled) { filter: brightness(1.15); }
+.sc-trigger:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.sc-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.sc-label { flex: 1; }
+.sc-chevron {
+  display: flex; align-items: center;
+  opacity: 0.8;
+}
+
+/* spinning indicator when saving */
+.sc-spinner {
+  display: inline-block;
+  width: 10px; height: 10px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: sc-spin 0.6s linear infinite;
+}
+@keyframes sc-spin { to { transform: rotate(360deg); } }
+
+/* backdrop — closes dropdown on outside click */
+.sc-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+}
+
+/* dropdown menu */
+.sc-dropdown {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  right: 0;
+  z-index: 50;
+  min-width: 160px;
+  background: #1a1a1a;
+  border: 1px solid rgba(200,138,86,0.25);
+  border-radius: 10px;
+  padding: 6px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+  animation: sc-pop 0.15s ease;
+}
+@keyframes sc-pop {
+  from { opacity: 0; transform: translateY(4px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0)   scale(1);    }
+}
+
+.sc-dropdown-label {
+  font-size: 9px;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  padding: 4px 8px 6px;
+}
+
+.sc-option {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 7px;
+  border: 1px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  text-align: left;
+}
+.sc-option:hover { background: rgba(255,255,255,0.05); }
+
+.sc-opt-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.sc-opt-label {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 500;
+}
+.sc-opt-check {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}

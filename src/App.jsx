@@ -15,10 +15,14 @@ import LuxuryJetForm from './Blogs/LuxuryJetForm';
 // import TestimonialForm from './CustomerRevuiewHelicopter/TestimonialForm';
 import BookingsDisplay from './BookingsDisplay/BookingsDisplay';
 import YachtManager from './YachtManager/YachtManager';
-import TripList from './Enquiry/TripList';
+// import TripList from './Enquiry/TripList';
 import SubscribersPage from './SubscribersPage/SubscribersPage';
 import SpecificEnquiry from './SpecificEnuiry/SpecificEnquiry';
 import XelevateEvents from './Events/Events';
+import QuoteRequestsAdmin from './Enquiry/Quoterequestsadmin';
+import EventsBooked from './EventBooked/EventsBooked';
+import EmptyLegAdmin from './EmptylegAdmin/Emptylegadmin';
+import CarBookings from './CarsBookings/CarBookings';
 
 function App() {
   const [count, setCount] = useState(0);
@@ -40,10 +44,14 @@ function App() {
           <Route path="/Helicopter" element={<Helicopter />} />
           <Route path="/YatchManager" element={<YachtManager />} />
           <Route path="/HelicopterEnquiry" element={<BookingsDisplay />} />
-          <Route path="/ClientEnquiry" element={<TripList />} />
+          {/* <Route path="/ClientEnquiry" element={<TripList />} /> */}
           <Route path="/Subscribers" element={<SubscribersPage />} />
           <Route path="/SpecificEnquiry" element={<SpecificEnquiry/>}/>
           <Route path="/Events" element={<XelevateEvents/>}/>
+          <Route path="/Enquiry" element={<QuoteRequestsAdmin/>}/>
+          <Route path="/EventsBooked" element={<EventsBooked/>}/>
+          <Route path='/EmptyLeg' element={<EmptyLegAdmin/>}/>
+          <Route path='/CarBookings' element={<CarBookings/>}/>
         </Routes>
       </Router>
     </>
