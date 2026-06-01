@@ -1,0 +1,348 @@
+/* Helicopterbookingcard.css */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+.hb-page {
+  background: #111;
+  min-height: 100vh;
+  padding: 2rem;
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/* ── Header ── */
+.hb-admin-label {
+  font-size: 11px;
+  color: #a0a832;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.4rem;
+  font-weight: 500;
+}
+
+.hb-page-title {
+  font-size: 26px;
+  font-weight: 600;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.hb-page-sub {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+.hb-badge-count {
+  background: #a0a832;
+  color: #111;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Status chips ── */
+.hb-status-chips {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.hb-chip {
+  border: 1.5px solid;
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  min-width: 72px;
+}
+
+.hb-chip-num { font-size: 18px; font-weight: 700; }
+.hb-chip-green { border-color: #a0a832; color: #a0a832; }
+.hb-chip-blue  { border-color: #3b82f6; color: #3b82f6; }
+.hb-chip-gray  { border-color: #555;    color: #555; }
+.hb-chip-red   { border-color: #ef4444; color: #ef4444; }
+
+/* ── Search ── */
+.hb-search-bar {
+  background: #1a1a1a;
+  border: 0.5px solid #333;
+  border-radius: 8px;
+  padding: 8px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 1rem;
+}
+
+.hb-search-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #ccc;
+  font-size: 13px;
+  width: 100%;
+}
+
+.hb-search-input::placeholder { color: #555; }
+
+/* ── Filter tabs ── */
+.hb-filter-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.hb-tab {
+  background: #1a1a1a;
+  border: 0.5px solid #333;
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-size: 12px;
+  color: #888;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.hb-tab:hover { background: #252525; color: #ccc; }
+
+.hb-tab.active {
+  background: #a0a832;
+  color: #111;
+  border-color: #a0a832;
+  font-weight: 600;
+}
+
+/* ── State messages ── */
+.hb-state-msg {
+  color: #666;
+  font-size: 13px;
+  padding: 2rem 0;
+  text-align: center;
+}
+.hb-error { color: #ef4444; }
+
+/* ── Card ── */
+.hb-card {
+  background: #1a1a1a;
+  border: 0.5px solid #2a2a2a;
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1rem;
+}
+
+/* ── Card header ── */
+.hb-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.hb-route {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 180px;
+}
+
+.hb-route-from { color: #aaa; font-size: 13px; }
+
+.hb-route-to {
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.hb-dotted-line {
+  width: 36px;
+  border-top: 1.5px dashed #555;
+  margin: 0 2px;
+}
+
+.hb-arrow { color: #a0a832; font-size: 16px; }
+
+.hb-aircraft-info { display: flex; flex-direction: column; gap: 4px; }
+.hb-aircraft-name { font-size: 13px; color: #fff; font-weight: 500; }
+.hb-aircraft-type { font-size: 11px; color: #888; }
+
+.hb-status-badge {
+  background: #1f2a0a;
+  color: #a0a832;
+  border: 1px solid #a0a832;
+  border-radius: 6px;
+  padding: 3px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  display: inline-block;
+  margin-top: 4px;
+}
+
+.hb-departure-info { margin-left: auto; text-align: right; }
+.hb-dep-label { font-size: 11px; color: #666; }
+.hb-dep-val   { font-size: 15px; font-weight: 700; color: #a0a832; }
+.hb-dep-time  { font-size: 14px; color: #ddd; font-weight: 500; }
+
+/* ── Progress ── */
+.hb-progress-wrap { margin-top: 12px; }
+
+.hb-progress-bg {
+  background: #2a2a2a;
+  border-radius: 4px;
+  height: 5px;
+  width: 100%;
+}
+
+.hb-progress-fill {
+  background: #a0a832;
+  height: 5px;
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+
+.hb-seats { font-size: 12px; color: #888; margin-top: 6px; }
+
+.hb-divider { border-top: 0.5px solid #2a2a2a; margin: 1rem 0; }
+
+/* ── Section title ── */
+.hb-section-title {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #a0a832;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 2px;
+}
+
+.hb-section-title i { font-size: 15px; }
+
+/* ── Aircraft image ── */
+.hb-aircraft-img-wrap {
+  margin-top: 10px;
+  border-radius: 8px;
+  overflow: hidden;
+  max-height: 200px;
+}
+
+.hb-aircraft-img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+  border-radius: 8px;
+}
+
+/* ── Detail grid ── */
+.hb-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+.hb-detail-item { display: flex; flex-direction: column; gap: 3px; }
+
+.hb-detail-label {
+  font-size: 11px;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.hb-detail-val { font-size: 13px; color: #ddd; font-weight: 500; }
+.hb-detail-val.small { font-size: 11px; color: #555; word-break: break-all; }
+
+/* ── Personal section ── */
+.hb-personal-section {
+  background: #141414;
+  border: 0.5px solid #2a2a2a;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.hb-personal-header {
+  font-size: 12px;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.hb-person-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.hb-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #a0a832;
+  color: #111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.hb-person-name { font-size: 14px; font-weight: 600; color: #fff; }
+.hb-person-meta { font-size: 12px; color: #888; }
+
+.hb-contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.hb-contact-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  color: #aaa;
+}
+
+.hb-contact-icon { color: #a0a832; font-size: 15px; }
+
+/* ── Notes ── */
+.hb-notes-box {
+  background: #0e0e0e;
+  border-left: 2px solid #a0a832;
+  border-radius: 0 6px 6px 0;
+  padding: 8px 12px;
+  font-size: 12px;
+  color: #999;
+  margin-top: 10px;
+}
+
+.hb-notes-label {
+  color: #a0a832;
+  font-size: 11px;
+  font-weight: 600;
+  margin-bottom: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}

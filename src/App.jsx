@@ -23,6 +23,7 @@ import QuoteRequestsAdmin from './Enquiry/Quoterequestsadmin';
 import EventsBooked from './EventBooked/EventsBooked';
 import EmptyLegAdmin from './EmptylegAdmin/Emptylegadmin';
 import CarBookings from './CarsBookings/CarBookings';
+import HelicopterBookingRequest from './Helicopter/Helicopterbookingcard';
 
 function App() {
   const [count, setCount] = useState(0);
@@ -52,6 +53,7 @@ function App() {
           <Route path="/EventsBooked" element={<EventsBooked/>}/>
           <Route path='/EmptyLeg' element={<EmptyLegAdmin/>}/>
           <Route path='/CarBookings' element={<CarBookings/>}/>
+          <Route path='/HelicopterBooking' element={<HelicopterBookingRequest/>}/>
         </Routes>
       </Router>
     </>

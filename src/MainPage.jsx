@@ -21,7 +21,8 @@ const cardData = [
   {title:"EventsBooked", route:"/EventsBooked"},
   { title: "Sign Up", route: "/SignUp" },
   {title:"EmptyLeg" , route:"/EmptyLeg"},
-  {title:"CarBookings", route:"/CarBookings"}
+  {title:"CarBookings", route:"/CarBookings"},
+  {title:"Helicopter Booking", route:"/HelicopterBooking"}
   
  
 ];
